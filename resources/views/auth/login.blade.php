@@ -289,6 +289,12 @@
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
+                @if ($errors->any())
+            <div style="background-color: #fee2e2; color: #b91c1c; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.875rem; border: 1px solid #f87171;">
+                {{ $errors->first() }}
+            </div>
+                @endif
+
                 <div class="form-group">
                     <label for="email">Email Address</label>
                     <div class="input-wrapper">

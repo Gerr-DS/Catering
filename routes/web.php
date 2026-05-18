@@ -1,21 +1,57 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\AdminDashboardController; 
+use App\Http\Controllers\AdminStockController;
+use App\Http\Controllers\AdminMenuController;
+use App\Models\Menu;
 
+// 1. Halaman Utama Pembeli (Tanpa Login)
+Route::get('/', function () {
+    $menus = Menu::latest()->get();
+
+    return view('dashboard', compact('menus'));
+});
+
+// 2. Rute Login
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
+Route::post('/login', [LoginController::class, 'login']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
+// 3. Rute Logout
+Route::post('/logout', function (\Illuminate\Http\Request $request) {
+    \Illuminate\Support\Facades\Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    return redirect('/');
 });
 
-// // Rute untuk halaman utama atau login default (sesuaikan dengan aplikasi Anda)
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+// 4. Rute Register (Berikan tanda // di depannya jika sudah selesai membuat akun Admin)
+Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+Route::post('/register', [RegisteredUserController::class, 'store']);
 
-// // Rute Dashboard yang HANYA bisa diakses oleh admin yang sudah login
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth'])->name('dashboard');
+// 5. Rute Dashboard Admin & Keuangan (Wajib Login)
+Route::middleware(['auth'])->group(function () {
+    // Baris di bawah ini yang memastikan $income, $totalPemasukkan, dll dikirim ke layar
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::post('/admin/financial/store', [AdminDashboardController::class, 'store'])->name('admin.financial.store');
+});
+
+// 6. Rute Stock Management (Wajib Login)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/stock', [AdminStockController::class, 'index'])->name('admin.stock.index');
+    Route::post('/admin/stock/store', [AdminStockController::class, 'store'])->name('admin.stock.store');
+});
+
+// 7. Rute Menu Management (Wajib Login)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/menu', [AdminMenuController::class, 'index'])->name('admin.menu.index');
+    Route::post('/admin/menu/store', [AdminMenuController::class, 'store'])->name('admin.menu.store');
+    Route::put('/admin/menu/{menu}/update', [AdminMenuController::class, 'update'])->name('admin.menu.update');
+    Route::delete('/admin/menu/{menu}/delete', [AdminMenuController::class, 'destroy'])->name('admin.menu.delete');
+});
+// 9.
+Route::get('/admin/reports', [App\Http\Controllers\AdminDashboardController::class, 'reports'])->name('admin.reports');

@@ -131,57 +131,74 @@
             margin-bottom: 2.5rem;
         }
 
-        /* Horizontal Menu */
-        .menu-section {
-            padding: 60px 20px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .menu-section h2 {
-            text-align: center;
-            color: #2E7D32;
-            font-size: 2.2rem;
-            margin-bottom: 2rem;
-        }
-
-        .menu-container {
+        /* KODE CSS BARU UNTUK MENU SCROLL DITENGAH */
+        .menu-container-center {
+            width: 100%;
             display: flex;
-            gap: 20px;
-            overflow-x: auto;
-            padding-bottom: 15px;
-            scrollbar-width: thin;
-            scrollbar-color: #2E7D32 #f1f1f1;
+            justify-content: center; 
+            padding: 0 15px;
         }
 
-        .menu-container::-webkit-scrollbar {
+        .menu-horizontal-scroll {
+            display: flex;
+            overflow-x: auto; 
+            gap: 20px; 
+            padding: 15px;
+            padding-bottom: 25px; 
+            scroll-snap-type: x mandatory;
+            max-width: 100%; 
+            justify-content: safe center; 
+        }
+
+        .menu-horizontal-scroll::-webkit-scrollbar {
             height: 8px;
         }
 
-        .menu-container::-webkit-scrollbar-track {
+        .menu-horizontal-scroll::-webkit-scrollbar-track {
             background: #f1f1f1;
             border-radius: 4px;
         }
 
-        .menu-container::-webkit-scrollbar-thumb {
+        .menu-horizontal-scroll::-webkit-scrollbar-thumb {
             background: #2E7D32;
             border-radius: 4px;
         }
 
         .menu-card {
             background: white;
-            min-width: 260px;
-            max-width: 260px;
+            flex: 0 0 260px; /* Memastikan lebar kartu tetap */
             border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.08);
-            padding: 20px;
             text-align: center;
-            flex-shrink: 0;
+            overflow: hidden;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
             transition: transform 0.3s ease;
         }
 
         .menu-card:hover {
             transform: translateY(-5px);
+        }
+
+        .menu-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .no-image {
+            width: 100%;
+            height: 180px;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+        }
+
+        .menu-details {
+            padding: 20px;
         }
 
         .menu-card h3 {
@@ -190,14 +207,7 @@
             margin-bottom: 10px;
         }
 
-        .menu-card p {
-            font-size: 0.95rem;
-            color: #666;
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-
-        .menu-price {
+        .price {
             font-weight: bold;
             color: #2e7d32;
             font-size: 1.1rem;
@@ -373,44 +383,24 @@
         </p>
     </div>
 
-    <div class="menu-section" id="menu-section">
-        <h2>Menu Pilihan Kami</h2>
-        <div class="menu-container">
-            <div class="menu-card">
-                <h3>Nasi Kotak Premium</h3>
-                <p>Nasi dengan lauk ayam bakar, tahu tempe, sambal dan lalapan segar.</p>
-                <div class="menu-price">Rp 30.000</div>
-            </div>
-            <div class="menu-card">
-                <h3>Prasmanan Spesial</h3>
-                <p>Pilihan hidangan utama, sup, dan hidangan penutup untuk acara besar.</p>
-                <div class="menu-price">Rp 65.000</div>
-            </div>
-            <div class="menu-card">
-                <h3>Buffet Wedding</h3>
-                <p>Paket lengkap dengan dekorasi meja dan variasi makanan mewah.</p>
-                <div class="menu-price">Rp 120.000</div>
-            </div>
-            <div class="menu-card">
-                <h3>Nasi Tumpeng</h3>
-                <p>Tumpeng tradisional untuk syukuran, cocok untuk 10-20 porsi.</p>
-                <div class="menu-price">Rp 450.000</div>
-            </div>
-            <div class="menu-card">
-                <h3>Snack Box</h3>
-                <p>Aneka kue basah dan jajanan pasar dengan kualitas terbaik.</p>
-                <div class="menu-price">Rp 15.000</div>
-            </div>
-            <div class="menu-card">
-                <h3>Menu Diet Sehat</h3>
-                <p>Rendah kalori, tinggi protein, dengan rasa yang tetap lezat.</p>
-                <div class="menu-price">Rp 40.000</div>
-            </div>
-            <div class="menu-card">
-                <h3>Coffee Break</h3>
-                <p>Kopi, teh, dan hidangan ringan untuk rapat atau seminar.</p>
-                <div class="menu-price">Rp 25.000</div>
-            </div>
+    <div class="menu-container-center" id="menu-section">
+        <div class="menu-horizontal-scroll">
+            @foreach($menus as $menu)
+                @if($menu->status)
+                    <div class="menu-card">
+                        @if($menu->image)
+                            <img src="{{ asset('storage/menus/' . $menu->image) }}" alt="{{ $menu->name }}" class="menu-image">
+                        @else
+                            <div class="no-image">Tidak ada gambar</div>
+                        @endif
+
+                        <div class="menu-details">
+                            <h3>{{ $menu->name }}</h3>
+                            <p class="price">Rp {{ number_format($menu->price, 0, ',', '.') }}</p>
+                        </div>
+                    </div>
+                @endif
+            @endforeach
         </div>
     </div>
 
