@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminStockController;
 use App\Http\Controllers\AdminMenuController;
 use App\Models\Menu;
+use App\Http\Controllers\ReportExportController;
 
 // 1. Halaman Utama Pembeli (Tanpa Login)
 Route::get('/', function () {
@@ -44,6 +45,8 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/stock', [AdminStockController::class, 'index'])->name('admin.stock.index');
     Route::post('/admin/stock/store', [AdminStockController::class, 'store'])->name('admin.stock.store');
+    Route::put('/admin/stock/{stock}/update', [AdminStockController::class, 'update'])
+    ->name('admin.stock.update');
 });
 
 // 7. Rute Menu Management (Wajib Login)
@@ -52,6 +55,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/menu/store', [AdminMenuController::class, 'store'])->name('admin.menu.store');
     Route::put('/admin/menu/{menu}/update', [AdminMenuController::class, 'update'])->name('admin.menu.update');
     Route::delete('/admin/menu/{menu}/delete', [AdminMenuController::class, 'destroy'])->name('admin.menu.delete');
+});
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/admin/reports/pdf', [ReportExportController::class, 'exportPdf'])
+        ->name('admin.reports.pdf');
+
+    Route::get('/admin/reports/excel', [ReportExportController::class, 'exportExcel'])
+        ->name('admin.reports.excel');
 });
 // 9.
 Route::get('/admin/reports', [App\Http\Controllers\AdminDashboardController::class, 'reports'])->name('admin.reports');

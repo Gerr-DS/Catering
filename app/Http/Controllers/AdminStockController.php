@@ -32,4 +32,20 @@ class AdminStockController extends Controller
 
         return back()->with('success', 'Bahan baku berhasil ditambahkan ke stok!');
     }
+    public function update(Request $request, Stock $stock)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'quantity' => 'required|numeric|min:0',
+            'unit' => 'required|string|max:50',
+        ]);
+
+        $stock->update([
+            'name' => $request->name,
+            'quantity' => $request->quantity,
+            'unit' => $request->unit,
+        ]);
+
+        return back()->with('success', 'Stok berhasil diperbarui!');
+    }
 }
