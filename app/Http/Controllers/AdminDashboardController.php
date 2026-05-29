@@ -33,10 +33,34 @@ class AdminDashboardController extends Controller
 
         return back()->with('success', 'Data ' . $request->type . ' berhasil ditambahkan!');
     }
-    public function reports()
+    public function reports(Request $request)
     {
-        // Mengambil semua data keuangan, diurutkan dari yang paling baru
-        $reports = \App\Models\Financial::orderBy('created_at', 'desc')->get();
+        $query = \App\Models\Financial::query();
+
+        // 1. Filter Tanggal
+        if ($request->filled('start_date')) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        }
+        if ($request->filled('end_date')) {
+            $query->whereDate('created_at', '<=', $request->end_date);
+        }
+
+        // 2. Filter Jenis Transaksi
+        if ($request->filled('type') && $request->type !== 'all') {
+            if ($request->type === 'pemasukan') {
+                $query->whereIn('type', ['pemasukan', 'pemasukkan']);
+            } else {
+                $query->where('type', $request->type);
+            }
+        }
+
+        // 3. Pencarian Keterangan
+        if ($request->filled('search')) {
+            $query->where('description', 'like', '%' . $request->search . '%');
+        }
+
+        // Dapatkan data terpaginasi (15 per halaman)
+        $reports = $query->orderBy('created_at', 'desc')->paginate(15);
         
         return view('admin.reports', compact('reports'));
     }

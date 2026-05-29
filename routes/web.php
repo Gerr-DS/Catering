@@ -10,11 +10,23 @@ use App\Models\Menu;
 use App\Http\Controllers\ReportExportController;
 
 // 1. Halaman Utama Pembeli (Tanpa Login)
-Route::get('/', function () {
+Route::get('/dashboard', function () {
     $menus = Menu::latest()->get();
 
     return view('dashboard', compact('menus'));
-});
+})->name('dashboard');
+
+Route::get('/menu', function () {
+    $menus = Menu::latest()->get();
+
+    return view('menu', compact('menus'));
+})->name('menu.pembeli');
+
+Route::get('/menu/{menu}', function (Menu $menu) {
+    return view('menu-detail', compact('menu'));
+})->name('menu.detail');
+
+Route::redirect('/', '/dashboard');
 
 // 2. Rute Login
 Route::get('/login', function () {
@@ -27,7 +39,7 @@ Route::post('/logout', function (\Illuminate\Http\Request $request) {
     \Illuminate\Support\Facades\Auth::logout();
     $request->session()->invalidate();
     $request->session()->regenerateToken();
-    return redirect('/');
+    return redirect('/dashboard');
 });
 
 // 4. Rute Register (Berikan tanda // di depannya jika sudah selesai membuat akun Admin)

@@ -123,6 +123,8 @@
 
         .input-wrapper {
             position: relative;
+            display: block;
+            width: 100%;
         }
 
         .input-wrapper svg {
@@ -133,17 +135,20 @@
             color: #9ca3af;
             width: 20px;
             height: 20px;
+            z-index: 5;
         }
 
         .form-input {
+            display: block;
             width: 100%;
-            padding: 12px 16px 12px 42px;
+            padding: 12px 42px 12px 42px;
             border: 1px solid #d1d5db;
             border-radius: 8px;
             font-size: 0.875rem;
             outline: none;
             background: #ffffff;
             transition: border-color 0.15s, box-shadow 0.15s;
+            box-sizing: border-box;
         }
 
         .form-input:focus {
@@ -171,6 +176,13 @@
             border: none;
             color: #9ca3af;
             cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            height: 20px;
+            width: 20px;
         }
 
         .password-toggle:hover {
@@ -283,7 +295,7 @@
 
             <div class="section-title">
                 <h2>Sign In</h2>
-                <p>Welcome back to the atelier. Please enter your details.</p>
+                <p>Selamat datang kembali! Silakan masukkan email dan kata sandi Anda.</p>
             </div>
 
             <form method="POST" action="{{ route('login') }}">
@@ -308,7 +320,6 @@
                 <div class="form-group">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                         <label for="password" style="margin-bottom: 0;">Password</label>
-                        <a class="forgot-password-link" href="#">Forgot Password?</a>
                     </div>
                     <div class="input-wrapper">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -335,17 +346,31 @@
             </form>
 
             <div class="footer-support">
-                Authorized Access Only. <a href="#">Contact Support</a>
+                Belum punya akun? <a href="{{ route('register') }}">Daftar Sekarang</a>
             </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const passwordInput = document.getElementById('password');
+                    const passwordToggle = document.querySelector('.password-toggle');
+                    
+                    passwordToggle.addEventListener('click', function () {
+                        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                        passwordInput.setAttribute('type', type);
+                        
+                        if (type === 'text') {
+                            passwordToggle.style.color = '#064e3b';
+                        } else {
+                            passwordToggle.style.color = '#9ca3af';
+                        }
+                    });
+                });
+            </script>
         </div>
     </div>
 
-    <div class="page-footer">
-        <div>&copy; 2024 Hafidz Catering Management. Crafted for Culinary Excellence.</div>
-        <div>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms</a>
-        </div>
+    <div class="page-footer" style="justify-content: center; text-align: center;">
+        <div>&copy; 2026 Hafidz Catering Management. Crafted for Culinary Excellence.</div>
     </div>
 
 </body>

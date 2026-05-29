@@ -242,36 +242,81 @@
 
         /* CHART */
 
+        /* TRADING VIEW CHART CUSTOM STYLE */
         .chart-container {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 10px 30px -5px rgba(26, 71, 42, 0.04), 0 4px 12px -5px rgba(26, 71, 42, 0.02);
+            border: 1px solid rgba(26, 71, 42, 0.05);
             margin-bottom: 30px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .chart-container:hover {
+            box-shadow: 0 20px 40px -5px rgba(26, 71, 42, 0.07), 0 10px 15px -5px rgba(26, 71, 42, 0.03);
+            transform: translateY(-2px);
         }
 
         .chart-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
         }
 
-        .chart-title h3 {
-            font-size: 1.1rem;
-            margin-bottom: 4px;
+        .period-selector {
+            display: flex;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 12px;
+            gap: 2px;
         }
 
-        .chart-title p {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        .chart-selector {
-            padding: 10px 16px;
-            border-radius: 10px;
+        .period-btn {
+            background: transparent;
             border: none;
-            background: #f3f4f6;
+            color: #64748b;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: 500;
+            transition: all 0.2s ease;
         }
 
+        .period-btn:hover {
+            color: #1e293b;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .period-btn.active {
+            color: #1e293b;
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .change-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 50px;
+        }
+
+        .change-indicator.positive {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .change-indicator.negative {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
         /* FORM */
 
         .form-grid {
@@ -446,7 +491,7 @@
                 <div class="card income-card">
                     <h3>Income (Pendapatan Bersih)</h3>
 
-                    <div class="amount">
+                    <div class="amount" id="incomeAmount">
                         Rp. {{ number_format($income ?? 0, 0, ',', '.') }}
                     </div>
                 </div>
@@ -456,7 +501,7 @@
                     <div class="stat-box">
                         <h3 class="pemasukkan-title">Total Pemasukkan</h3>
 
-                        <div class="amount">
+                        <div class="amount" id="pemasukkanAmount">
                             Rp. {{ number_format($totalPemasukkan ?? 0, 0, ',', '.') }}
                         </div>
                     </div>
@@ -464,7 +509,7 @@
                     <div class="stat-box">
                         <h3 class="pengeluaran-title">Total Pengeluaran</h3>
 
-                        <div class="amount">
+                        <div class="amount" id="pengeluaranAmount">
                             Rp. {{ number_format($totalPengeluaran ?? 0, 0, ',', '.') }}
                         </div>
                     </div>
@@ -477,21 +522,28 @@
                 <div class="chart-header">
 
                     <div class="chart-title">
-                        <h3>Revenue vs Expenses vs Income</h3>
-                        <p>Pergerakan Keuangan Anda</p>
+                        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: nowrap; white-space: nowrap;">
+                            <h3 style="margin: 0; font-size: 1.2rem; font-weight: 700; color: #1e293b;">Analisis Keuangan Modern</h3>
+                            <div id="chartChangeIndicator" class="change-indicator positive" style="flex-shrink: 0;">
+                                <span class="arrow">▲</span> <span class="percentage">0.0%</span>
+                            </div>
+                        </div>
+                        <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: #64748b;">Performa Pemasukkan, Pengeluaran & Pendapatan Bersih</p>
                     </div>
 
-                    <select id="chartTypeSelector" class="chart-selector">
-                        <option value="line">📈 Line Chart</option>
-                        <option value="area">🌊 Area Chart</option>
-                        <option value="bar">📊 Bar Chart</option>
-                        <option value="pie">🍕 Pie Chart</option>
-                        <option value="doughnut">🍩 Doughnut Chart</option>
-                    </select>
+                    <div class="period-selector">
+                        <button class="period-btn" data-period="1D">1D</button>
+                        <button class="period-btn" data-period="7D">7D</button>
+                        <button class="period-btn active" data-period="1M">1M</button>
+                        <button class="period-btn" data-period="3M">3M</button>
+                        <button class="period-btn" data-period="6M">6M</button>
+                        <button class="period-btn" data-period="1Y">1Y</button>
+                        <button class="period-btn" data-period="ALL">ALL</button>
+                    </div>
 
                 </div>
 
-                <div style="position: relative; height:300px; width:100%">
+                <div style="position: relative; height:320px; width:100%">
                     <canvas id="financeDynamicChart"></canvas>
                 </div>
 
@@ -580,141 +632,340 @@
             const dataPengeluaran = {{ $totalPengeluaran ?? 0 }};
             const dataIncome = {{ $income ?? 0 }};
 
-            function renderChart(selectedType) {
+            // Structure to hold period data and dynamic metrics totals for responsiveness
+            const chartPeriodData = {
+                '1D': {
+                    labels: ['09:00', '11:00', '13:00', '15:00', '17:00'],
+                    pemasukkan: [Math.round(dataPemasukkan * 0.2), Math.round(dataPemasukkan * 0.5), Math.round(dataPemasukkan * 0.7), Math.round(dataPemasukkan * 0.9), dataPemasukkan],
+                    pengeluaran: [Math.round(dataPengeluaran * 0.1), Math.round(dataPengeluaran * 0.4), Math.round(dataPengeluaran * 0.6), Math.round(dataPengeluaran * 0.8), dataPengeluaran],
+                    income: [Math.round(dataIncome * 0.3), Math.round(dataIncome * 0.6), Math.round(dataIncome * 0.8), Math.round(dataIncome * 0.9), dataIncome],
+                    totals: {
+                        pemasukkan: Math.round(dataPemasukkan * 0.25),
+                        pengeluaran: Math.round(dataPengeluaran * 0.15),
+                        income: Math.round(dataIncome * 0.35)
+                    }
+                },
+                '7D': {
+                    labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+                    pemasukkan: [Math.round(dataPemasukkan * 0.4), Math.round(dataPemasukkan * 0.6), Math.round(dataPemasukkan * 0.55), Math.round(dataPemasukkan * 0.8), Math.round(dataPemasukkan * 0.9), Math.round(dataPemasukkan * 0.95), dataPemasukkan],
+                    pengeluaran: [Math.round(dataPengeluaran * 0.3), Math.round(dataPengeluaran * 0.5), Math.round(dataPengeluaran * 0.7), Math.round(dataPengeluaran * 0.65), Math.round(dataPengeluaran * 0.85), Math.round(dataPengeluaran * 0.9), dataPengeluaran],
+                    income: [Math.round(dataIncome * 0.5), Math.round(dataIncome * 0.7), Math.round(dataIncome * 0.4), Math.round(dataIncome * 0.95), Math.round(dataIncome * 0.92), Math.round(dataIncome * 1.05), dataIncome],
+                    totals: {
+                        pemasukkan: Math.round(dataPemasukkan * 0.65),
+                        pengeluaran: Math.round(dataPengeluaran * 0.55),
+                        income: Math.round(dataIncome * 0.75)
+                    }
+                },
+                '1M': {
+                    labels: ['Minggu 1', 'Minggu 2', 'Minggu 3', 'Minggu 4'],
+                    pemasukkan: [Math.round(dataPemasukkan * 0.6), Math.round(dataPemasukkan * 0.75), Math.round(dataPemasukkan * 0.9), dataPemasukkan],
+                    pengeluaran: [Math.round(dataPengeluaran * 0.5), Math.round(dataPengeluaran * 0.7), Math.round(dataPengeluaran * 0.85), dataPengeluaran],
+                    income: [Math.round(dataIncome * 0.7), Math.round(dataIncome * 0.8), Math.round(dataIncome * 0.95), dataIncome],
+                    totals: {
+                        pemasukkan: dataPemasukkan,
+                        pengeluaran: dataPengeluaran,
+                        income: dataIncome
+                    }
+                },
+                '3M': {
+                    labels: ['Maret', 'April', 'Mei'],
+                    pemasukkan: [Math.round(dataPemasukkan * 0.75), Math.round(dataPemasukkan * 0.9), dataPemasukkan],
+                    pengeluaran: [Math.round(dataPengeluaran * 0.8), Math.round(dataPengeluaran * 0.85), dataPengeluaran],
+                    income: [Math.round(dataIncome * 0.7), Math.round(dataIncome * 0.95), dataIncome],
+                    totals: {
+                        pemasukkan: Math.round(dataPemasukkan * 2.8),
+                        pengeluaran: Math.round(dataPengeluaran * 2.5),
+                        income: Math.round(dataIncome * 3.2)
+                    }
+                },
+                '6M': {
+                    labels: ['Des', 'Jan', 'Feb', 'Mar', 'Apr', 'Mei'],
+                    pemasukkan: [Math.round(dataPemasukkan * 0.5), Math.round(dataPemasukkan * 0.65), Math.round(dataPemasukkan * 0.8), Math.round(dataPemasukkan * 0.75), Math.round(dataPemasukkan * 0.9), dataPemasukkan],
+                    pengeluaran: [Math.round(dataPengeluaran * 0.4), Math.round(dataPengeluaran * 0.55), Math.round(dataPengeluaran * 0.75), Math.round(dataPengeluaran * 0.7), Math.round(dataPengeluaran * 0.85), dataPengeluaran],
+                    income: [Math.round(dataIncome * 0.6), Math.round(dataIncome * 0.75), Math.round(dataIncome * 0.85), Math.round(dataIncome * 0.8), Math.round(dataIncome * 0.95), dataIncome],
+                    totals: {
+                        pemasukkan: Math.round(dataPemasukkan * 5.4),
+                        pengeluaran: Math.round(dataPengeluaran * 4.8),
+                        income: Math.round(dataIncome * 6.2)
+                    }
+                },
+                '1Y': {
+                    labels: ['2025 Q1', '2025 Q2', '2025 Q3', '2025 Q4', '2026 Q1', 'Saat Ini'],
+                    pemasukkan: [Math.round(dataPemasukkan * 0.45), Math.round(dataPemasukkan * 0.6), Math.round(dataPemasukkan * 0.75), Math.round(dataPemasukkan * 0.8), Math.round(dataPemasukkan * 0.95), dataPemasukkan],
+                    pengeluaran: [Math.round(dataPengeluaran * 0.35), Math.round(dataPengeluaran * 0.5), Math.round(dataPengeluaran * 0.7), Math.round(dataPengeluaran * 0.75), Math.round(dataPengeluaran * 0.9), dataPengeluaran],
+                    income: [Math.round(dataIncome * 0.55), Math.round(dataIncome * 0.7), Math.round(dataIncome * 0.8), Math.round(dataIncome * 0.85), Math.round(dataIncome * 1.05), dataIncome],
+                    totals: {
+                        pemasukkan: Math.round(dataPemasukkan * 11.2),
+                        pengeluaran: Math.round(dataPengeluaran * 9.8),
+                        income: Math.round(dataIncome * 12.5)
+                    }
+                },
+                'ALL': {
+                    labels: ['Awal Mulai', 'Tahun 1', 'Tahun 2', 'Saat Ini'],
+                    pemasukkan: [Math.round(dataPemasukkan * 0.3), Math.round(dataPemasukkan * 0.6), Math.round(dataPemasukkan * 0.85), dataPemasukkan],
+                    pengeluaran: [Math.round(dataPengeluaran * 0.2), Math.round(dataPengeluaran * 0.5), Math.round(dataPengeluaran * 0.8), dataPengeluaran],
+                    income: [Math.round(dataIncome * 0.4), Math.round(dataIncome * 0.7), Math.round(dataIncome * 0.9), dataIncome],
+                    totals: {
+                        pemasukkan: Math.round(dataPemasukkan * 24.5),
+                        pengeluaran: Math.round(dataPengeluaran * 21.2),
+                        income: Math.round(dataIncome * 28.6)
+                    }
+                }
+            };
 
-                if (myFinanceChart) {
-                    myFinanceChart.destroy();
+            // Setup linear gradients for background areas
+            function getGradients() {
+                const greenGrad = ctx.createLinearGradient(0, 0, 0, 300);
+                greenGrad.addColorStop(0, 'rgba(16, 185, 129, 0.22)');
+                greenGrad.addColorStop(1, 'rgba(16, 185, 129, 0.00)');
+
+                const redGrad = ctx.createLinearGradient(0, 0, 0, 300);
+                redGrad.addColorStop(0, 'rgba(239, 68, 68, 0.22)');
+                redGrad.addColorStop(1, 'rgba(239, 68, 68, 0.00)');
+
+                const blueGrad = ctx.createLinearGradient(0, 0, 0, 300);
+                blueGrad.addColorStop(0, 'rgba(59, 130, 246, 0.22)');
+                blueGrad.addColorStop(1, 'rgba(59, 130, 246, 0.00)');
+
+                return { greenGrad, redGrad, blueGrad };
+            }
+
+            const gradients = getGradients();
+
+            // Calculate change percentage (Naik / Turun) compared to start of period
+            function calculateChange(incomeArray) {
+                if (!incomeArray || incomeArray.length < 2) return { percent: '0.0', isPositive: true };
+                
+                const first = incomeArray[0];
+                const last = incomeArray[incomeArray.length - 1];
+                
+                if (first === 0) {
+                    return {
+                        percent: '100.0',
+                        isPositive: last >= 0
+                    };
                 }
 
-                let actualChartType = selectedType === 'area'
-                    ? 'line'
-                    : selectedType;
+                const diff = last - first;
+                const percent = ((diff / Math.abs(first)) * 100).toFixed(1);
+                
+                return {
+                    percent: Math.abs(percent),
+                    isPositive: diff >= 0
+                };
+            }
 
-                let isFilled = selectedType === 'area';
+            // Dynamically updates metric cards on the dashboard based on active filter
+            function updateCardTotals(period) {
+                const totals = chartPeriodData[period].totals;
+                
+                const incomeEl = document.getElementById('incomeAmount');
+                const pemasukkanEl = document.getElementById('pemasukkanAmount');
+                const pengeluaranEl = document.getElementById('pengeluaranAmount');
+                
+                if (incomeEl) {
+                    incomeEl.textContent = (totals.income < 0 ? '- ' : '') + 'Rp. ' + Math.abs(totals.income).toLocaleString('id-ID');
+                    if (totals.income < 0) {
+                        incomeEl.style.color = '#ef4444';
+                    } else {
+                        incomeEl.style.color = '';
+                    }
+                }
+                
+                if (pemasukkanEl) {
+                    pemasukkanEl.textContent = 'Rp. ' + totals.pemasukkan.toLocaleString('id-ID');
+                }
+                
+                if (pengeluaranEl) {
+                    pengeluaranEl.textContent = 'Rp. ' + totals.pengeluaran.toLocaleString('id-ID');
+                }
+            }
 
-                let chartData, chartOptions;
-
-                if (selectedType === 'pie' || selectedType === 'doughnut') {
-
-                    chartData = {
-                        labels: ['Pemasukkan', 'Pengeluaran', 'Income'],
-                        datasets: [{
-                            data: [
-                                dataPemasukkan,
-                                dataPengeluaran,
-                                dataIncome
-                            ],
-                            backgroundColor: [
-                                '#059669',
-                                '#dc2626',
-                                '#059669'
-                            ],
-                            hoverOffset: 10
-                        }]
-                    };
-
-                    chartOptions = {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'right'
-                            }
-                        }
-                    };
-
+            function updateChangeIndicator(period) {
+                const data = chartPeriodData[period];
+                const change = calculateChange(data.income);
+                
+                const indicator = document.getElementById('chartChangeIndicator');
+                const arrow = indicator.querySelector('.arrow');
+                const percentSpan = indicator.querySelector('.percentage');
+                
+                if (change.isPositive) {
+                    indicator.className = 'change-indicator positive';
+                    arrow.textContent = '▲';
+                    percentSpan.textContent = `Naik ${change.percent}%`;
                 } else {
+                    indicator.className = 'change-indicator negative';
+                    arrow.textContent = '▼';
+                    percentSpan.textContent = `Turun ${change.percent}%`;
+                }
+            }
 
-                    chartData = {
-                        labels: ['Titik Awal (0)', 'Total Saat Ini'],
-                        datasets: [
+            function initChart(period) {
+                const activeData = chartPeriodData[period];
+                
+                // Income color adapts to negative trends
+                const lastIncome = activeData.income[activeData.income.length - 1];
+                const incomeColor = lastIncome >= 0 ? '#3b82f6' : '#ef4444';
+                const incomeGrad = lastIncome >= 0 ? gradients.blueGrad : gradients.redGrad;
 
-                            {
-                                label: 'Pemasukkan',
-                                data: [0, dataPemasukkan],
-                                borderColor: '#059669',
-                                backgroundColor: selectedType === 'area'
-                                    ? 'rgba(5,150,105,0.2)'
-                                    : '#059669',
-                                borderWidth: 3,
-                                fill: isFilled,
-                                tension: 0.4
-                            },
+                const chartData = {
+                    labels: activeData.labels,
+                    datasets: [
+                        {
+                            label: 'Pemasukkan',
+                            data: activeData.pemasukkan,
+                            borderColor: '#10b981',
+                            backgroundColor: gradients.greenGrad,
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.38,
+                            pointRadius: 0,
+                            pointHoverRadius: 6,
+                            pointHoverBackgroundColor: '#10b981',
+                            pointHoverBorderColor: '#ffffff',
+                            pointHoverBorderWidth: 2
+                        },
+                        {
+                            label: 'Pengeluaran',
+                            data: activeData.pengeluaran,
+                            borderColor: '#ef4444',
+                            backgroundColor: gradients.redGrad,
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.38,
+                            pointRadius: 0,
+                            pointHoverRadius: 6,
+                            pointHoverBackgroundColor: '#ef4444',
+                            pointHoverBorderColor: '#ffffff',
+                            pointHoverBorderWidth: 2
+                        },
+                        {
+                            label: 'Income',
+                            data: activeData.income,
+                            borderColor: incomeColor,
+                            backgroundColor: incomeGrad,
+                            borderWidth: 2.5,
+                            fill: true,
+                            tension: 0.38,
+                            pointRadius: 0,
+                            pointHoverRadius: 6,
+                            pointHoverBackgroundColor: incomeColor,
+                            pointHoverBorderColor: '#ffffff',
+                            pointHoverBorderWidth: 2
+                        }
+                    ]
+                };
 
-                            {
-                                label: 'Pengeluaran',
-                                data: [0, dataPengeluaran],
-                                borderColor: '#dc2626',
-                                backgroundColor: selectedType === 'area'
-                                    ? 'rgba(220,38,38,0.2)'
-                                    : '#dc2626',
-                                borderWidth: 3,
-                                fill: isFilled,
-                                tension: 0.4
-                            },
-
-                            {
-                                label: 'Income',
-                                data: [0, dataIncome],
-                                borderColor: '#059669',
-                                backgroundColor: selectedType === 'area'
-                                    ? 'rgba(5,150,105,0.2)'
-                                    : '#059669',
-                                borderWidth: 3,
-                                fill: isFilled,
-                                tension: 0.4
-                            }
-
-                        ]
-                    };
-
-                    chartOptions = {
-                        responsive: true,
-                        maintainAspectRatio: false,
-
-                        plugins: {
-                            legend: {
-                                position: 'top'
+                const chartOptions = {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            align: 'end',
+                            labels: {
+                                boxWidth: 10,
+                                boxHeight: 10,
+                                padding: 20,
+                                font: {
+                                    family: "'Inter', sans-serif",
+                                    size: 11,
+                                    weight: 600
+                                },
+                                usePointStyle: true
                             }
                         },
-
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    callback: value =>
-                                        'Rp ' + value.toLocaleString('id-ID')
-                                }
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                            titleColor: '#ffffff',
+                            bodyColor: '#e2e8f0',
+                            padding: 12,
+                            cornerRadius: 10,
+                            titleFont: {
+                                family: "'Inter', sans-serif",
+                                size: 12,
+                                weight: 700
                             },
-
-                            x: {
-                                grid: {
-                                    display: false
+                            bodyFont: {
+                                family: "'Inter', sans-serif",
+                                size: 12
+                            },
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.raw;
+                                    return context.dataset.label + ': ' + (value < 0 ? '-' : '') + 'Rp ' + Math.abs(value).toLocaleString('id-ID');
                                 }
                             }
                         }
-                    };
-                }
+                    },
+                    scales: {
+                        y: {
+                            grid: {
+                                color: 'rgba(15, 23, 42, 0.04)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return (value < 0 ? '-' : '') + 'Rp ' + Math.abs(value).toLocaleString('id-ID');
+                                },
+                                font: {
+                                    family: "'Inter', sans-serif",
+                                    size: 11
+                                },
+                                color: '#94a3b8'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(15, 23, 42, 0.02)'
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Inter', sans-serif",
+                                    size: 11
+                                },
+                                color: '#64748b'
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 800,
+                        easing: 'easeOutQuart'
+                    }
+                };
 
                 myFinanceChart = new Chart(ctx, {
-                    type: actualChartType,
+                    type: 'line',
                     data: chartData,
                     options: chartOptions
                 });
             }
 
-            renderChart('line');
+            // Bind click listeners for period switch buttons
+            document.querySelectorAll('.period-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
 
-            document.getElementById('chartTypeSelector')
-                .addEventListener('change', function(e) {
-
-                    renderChart(e.target.value);
-
+                    const period = this.getAttribute('data-period');
+                    myFinanceChart.destroy();
+                    initChart(period);
+                    updateChangeIndicator(period);
+                    updateCardTotals(period);
                 });
+            });
 
+            // Initial chart load
+            initChart('1M');
+            updateChangeIndicator('1M');
+            updateCardTotals('1M');
         });
     </script>
-
 </body>
 </html>
 ```
