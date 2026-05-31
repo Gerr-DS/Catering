@@ -59,6 +59,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/stock', [AdminStockController::class, 'index'])->name('admin.stock.index');
     Route::post('/admin/stock/store', [AdminStockController::class, 'store'])->name('admin.stock.store');
     Route::put('/admin/stock/{id}/update', [AdminStockController::class, 'update'])->name('admin.stock.update');
+    Route::delete('/admin/stock/{id}/delete', [AdminStockController::class, 'destroy'])->name('admin.stock.delete');
 });
 
 // 7. Rute Menu Management (Wajib Login)
@@ -72,9 +73,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/admin/reports/pdf', [ReportExportController::class, 'exportPdf'])
         ->name('admin.reports.pdf');
-
-    Route::get('/admin/reports/excel', [ReportExportController::class, 'exportExcel'])
-        ->name('admin.reports.excel');
 });
 // 9.
 Route::get('/admin/reports', [App\Http\Controllers\AdminDashboardController::class, 'reports'])->name('admin.reports');

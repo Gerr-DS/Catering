@@ -51,4 +51,12 @@ class AdminStockController extends Controller
 
         return back()->with('success', 'Stok berhasil diperbarui!');
     }
+
+    public function destroy($id)
+    {
+        $stock = StokBahan::findOrFail($id);
+        $stock->delete();
+
+        return back()->with('success', 'Bahan baku berhasil dihapus permanen!');
+    }
 }

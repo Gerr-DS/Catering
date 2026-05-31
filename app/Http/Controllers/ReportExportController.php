@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\TransaksiKeuangan;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\FinancialExport;
 use Illuminate\Http\Request;
 
 class ReportExportController extends Controller
@@ -43,13 +41,5 @@ class ReportExportController extends Controller
         $pdf = Pdf::loadView('admin.reports-pdf', compact('reports', 'totalPemasukan', 'totalPengeluaran', 'labaBersih'));
 
         return $pdf->download('laporan-keuangan.pdf');
-    }
-
-    public function exportExcel(Request $request)
-    {
-        return Excel::download(
-            new FinancialExport($request),
-            'laporan-keuangan.xlsx'
-        );
     }
 }

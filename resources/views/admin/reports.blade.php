@@ -368,22 +368,6 @@
                 📄 Unduh PDF
             </a>
 
-            <a
-                href="{{ route('admin.reports.excel', request()->all()) }}"
-                style="
-                    background:#059669;
-                    color:white;
-                    padding:10px 16px;
-                    border-radius:8px;
-                    text-decoration:none;
-                    font-weight:bold;
-                    transition: opacity 0.2s;
-                "
-                onmouseover="this.style.opacity='0.9'"
-                onmouseout="this.style.opacity='1'">
-                📊 Unduh Excel
-            </a>
-
             <button
                 onclick="window.print()"
                 style="

@@ -721,7 +721,7 @@
                                     <button onclick="openEditModal('{{ $stock->id_stok }}', '{{ addslashes($stock->nama_bahan) }}', '{{ $qty }}', '{{ addslashes($stock->satuan) }}')" class="action-btn edit" title="Edit Bahan Baku">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
-                                    <button onclick="simulateDelete(this, '{{ addslashes($stock->nama_bahan) }}')" class="action-btn delete" title="Hapus Bahan Baku">
+                                    <button onclick="confirmDelete('{{ $stock->id_stok }}', '{{ addslashes($stock->nama_bahan) }}')" class="action-btn delete" title="Hapus Bahan Baku">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
                                 </div>
@@ -891,26 +891,20 @@
             document.getElementById('editModal').style.display = 'none';
         }
 
-        function simulateDelete(button, name) {
-            if (confirm(`Apakah Anda yakin ingin menghapus bahan baku "${name}"?`)) {
-                const row = button.closest('tr');
-                row.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
-                row.style.opacity = '0';
-                row.style.transform = 'translateX(24px)';
-                setTimeout(() => {
-                    row.remove();
-                    alert(`Bahan baku "${name}" berhasil dihapus secara lokal (Simulasi UI).`);
-                    
-                    // Simple logic to count the remaining rows
-                    const rows = document.querySelectorAll('.stock-row');
-                    if (rows.length === 0) {
-                        const tbody = document.getElementById('stockTableBody');
-                        tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Belum ada data stok bahan baku. Silakan tambahkan.</td></tr>';
-                    }
-                }, 400);
+        function confirmDelete(id, name) {
+            if (confirm(`Apakah Anda yakin ingin menghapus bahan baku "${name}" secara permanen?`)) {
+                const form = document.getElementById('delete-form');
+                form.action = '/admin/stock/' + id + '/delete';
+                form.submit();
             }
         }
     </script>
+
+    <!-- Hidden Delete Form untuk Stok -->
+    <form id="delete-form" method="POST" style="display: none;">
+        @csrf
+        @method('DELETE')
+    </form>
 
     <script>
         function toggleSidebar() {
