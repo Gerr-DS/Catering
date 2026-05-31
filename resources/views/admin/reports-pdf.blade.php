@@ -109,7 +109,7 @@
             @foreach($reports as $report)
             <tr>
                 <td>
-                    {{ $report->created_at->format('d M Y, H:i') }} WIB
+                    {{ \Carbon\Carbon::parse($report->tanggal)->format('d M Y') }}
                 </td>
 
                 <td class="font-semibold">

@@ -10,17 +10,21 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::create('menus', function (Blueprint $table) {
-        $table->id();
-        $table->string('name');
-        $table->text('description')->nullable();
-        $table->bigInteger('price');
-        $table->boolean('is_ready')->default(true); // true = Ready, false = Habis
-        $table->string('image')->nullable(); // Untuk menyimpan nama file gambar
-        $table->timestamps();
-    });
-}
+    {
+        Schema::create('menus', function (Blueprint $table) {
+            $table->id('id_menu');
+            $table->unsignedBigInteger('id_admin');
+            $table->string('nama_menu');
+            $table->decimal('harga_menu', 15, 2);
+            $table->string('status_menu'); // "1" = Ready/Aktif, "0" = Nonaktif/Habis
+            $table->text('deskripsi')->nullable();
+            $table->integer('stok_menu')->default(0);
+            $table->string('gambar')->nullable();
+            $table->timestamps();
+
+            $table->foreign('id_admin')->references('id_admin')->on('admins')->onDelete('cascade');
+        });
+    }
 
     /**
      * Reverse the migrations.

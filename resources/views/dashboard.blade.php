@@ -931,10 +931,10 @@
                 @foreach($menus as $menu)
                     @if($menu->status)
                         @php $readyCount++; @endphp
-                        <a href="{{ route('menu.detail', $menu->id) }}" class="menu-card {{ $readyCount > 3 ? 'extra-menu' : '' }}" style="text-decoration: none; color: inherit; {{ $readyCount > 3 ? 'display: none;' : '' }}">
+                        <a href="{{ route('menu.detail', $menu->id_menu) }}" class="menu-card {{ $readyCount > 3 ? 'extra-menu' : '' }}" style="text-decoration: none; color: inherit; {{ $readyCount > 3 ? 'display: none;' : '' }}">
                             <span class="badge-ready">TERSEDIA</span>
-                            @if($menu->image)
-                                <img src="{{ asset('storage/menus/' . $menu->image) }}" alt="{{ $menu->name }}" class="menu-image">
+                            @if($menu->gambar)
+                                <img src="{{ asset('storage/menus/' . $menu->gambar) }}" alt="{{ $menu->nama_menu }}" class="menu-image">
                             @else
                                 <div class="no-image">
                                     <span>🍲</span>
@@ -943,15 +943,15 @@
                             @endif
 
                             <div class="menu-details">
-                                <h3>{{ $menu->name }}</h3>
-                                @if($menu->description)
-                                    <p style="font-size: 0.85rem; color: var(--text-muted); margin: 8px 0; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; min-height: 2.8em;">{{ $menu->description }}</p>
+                                <h3>{{ $menu->nama_menu }}</h3>
+                                @if($menu->deskripsi)
+                                    <p style="font-size: 0.85rem; color: var(--text-muted); margin: 8px 0; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; min-height: 2.8em;">{{ $menu->deskripsi }}</p>
                                 @else
                                     <div style="min-height: 2.8em; margin: 8px 0;"></div>
                                 @endif
                                 <p class="price">
                                     <span class="price-label">Harga Porsi</span>
-                                    Rp {{ number_format($menu->price, 0, ',', '.') }}
+                                    Rp {{ number_format($menu->harga_menu, 0, ',', '.') }}
                                 </p>
                             </div>
                         </a>

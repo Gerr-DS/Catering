@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Financial;
+use App\Models\TransaksiKeuangan;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\FinancialExport;
@@ -12,35 +12,32 @@ class ReportExportController extends Controller
 {
     public function exportPdf(Request $request)
     {
-        $query = Financial::query();
+        $query = TransaksiKeuangan::query();
 
         // 1. Filter Tanggal
         if ($request->filled('start_date')) {
-            $query->whereDate('created_at', '>=', $request->start_date);
+            $query->whereDate('tanggal', '>=', $request->start_date);
         }
         if ($request->filled('end_date')) {
-            $query->whereDate('created_at', '<=', $request->end_date);
+            $query->whereDate('tanggal', '<=', $request->end_date);
         }
 
         // 2. Filter Jenis Transaksi
         if ($request->filled('type') && $request->type !== 'all') {
-            if ($request->type === 'pemasukan') {
-                $query->whereIn('type', ['pemasukan', 'pemasukkan']);
-            } else {
-                $query->where('type', $request->type);
-            }
+            $jenis = in_array(strtolower($request->type), ['pemasukan', 'pemasukkan']) ? 1 : 2;
+            $query->where('jenis_transaksi', $jenis);
         }
 
         // 3. Pencarian Keterangan
         if ($request->filled('search')) {
-            $query->where('description', 'like', '%' . $request->search . '%');
+            $query->where('deskripsi', 'like', '%' . $request->search . '%');
         }
 
-        $reports = $query->orderBy('created_at', 'desc')->get();
+        $reports = $query->orderBy('tanggal', 'desc')->orderBy('created_at', 'desc')->get();
 
         // Calculate summaries dynamically
-        $totalPemasukan = $reports->filter(fn($r) => in_array(strtolower($r->type), ['pemasukan', 'pemasukkan']))->sum('amount');
-        $totalPengeluaran = $reports->filter(fn($r) => strtolower($r->type) === 'pengeluaran')->sum('amount');
+        $totalPemasukan = $reports->filter(fn($r) => $r->jenis_transaksi == 1)->sum('nominal');
+        $totalPengeluaran = $reports->filter(fn($r) => $r->jenis_transaksi == 2)->sum('nominal');
         $labaBersih = $totalPemasukan - $totalPengeluaran;
 
         $pdf = Pdf::loadView('admin.reports-pdf', compact('reports', 'totalPemasukan', 'totalPengeluaran', 'labaBersih'));

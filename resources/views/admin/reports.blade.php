@@ -450,38 +450,52 @@
             <table style="width: 100%; border-collapse: collapse;">
                 <thead>
                     <tr>
-                        <th style="padding: 15px; border-bottom: 1px solid #f1f5f9; background-color: #f8fafc; font-weight: 600; color: #64748b; font-size: 0.85rem;">Waktu Pencatatan</th>
-                        <th style="padding: 15px; border-bottom: 1px solid #f1f5f9; background-color: #f8fafc; font-weight: 600; color: #64748b; font-size: 0.85rem;">Keterangan</th>
-                        <th style="padding: 15px; border-bottom: 1px solid #f1f5f9; background-color: #f8fafc; font-weight: 600; color: #64748b; font-size: 0.85rem;">Tipe</th>
-                        <th style="padding: 15px; border-bottom: 1px solid #f1f5f9; background-color: #f8fafc; font-weight: 600; color: #64748b; font-size: 0.85rem;">Nominal</th>
+                        <th style="padding: 15px; border-bottom: 1px solid #f1f5f9; background-color: #f8fafc; font-weight: 600; color: #64748b; font-size: 0.85rem; text-align: left;">Waktu Pencatatan</th>
+                        <th style="padding: 15px; border-bottom: 1px solid #f1f5f9; background-color: #f8fafc; font-weight: 600; color: #64748b; font-size: 0.85rem; text-align: left;">Keterangan</th>
+                        <th style="padding: 15px; border-bottom: 1px solid #f1f5f9; background-color: #f8fafc; font-weight: 600; color: #64748b; font-size: 0.85rem; text-align: left;">Tipe</th>
+                        <th style="padding: 15px; border-bottom: 1px solid #f1f5f9; background-color: #f8fafc; font-weight: 600; color: #64748b; font-size: 0.85rem; text-align: left;">Nominal</th>
+                        <th style="padding: 15px; border-bottom: 1px solid #f1f5f9; background-color: #f8fafc; font-weight: 600; color: #64748b; font-size: 0.85rem; text-align: center;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($reports as $report)
                     <tr>
-                        <td>{{ $report->created_at->format('d M Y, H:i') }} WIB</td>
+                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; color: #64748b; font-size: 0.9rem;">
+                            {{ \Carbon\Carbon::parse($report->tanggal)->format('d M Y') }}
+                        </td>
 
-                        <td style="font-weight: 500; color: #1e293b;">{{ $report->description ?? 'Tidak ada keterangan' }}</td>
+                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; font-weight: 500; color: #1e293b; font-size: 0.9rem;">{{ $report->deskripsi ?? 'Tidak ada keterangan' }}</td>
 
-                        <td>
-                            @if(strtolower($report->type) == 'pemasukan' || strtolower($report->type) == 'pemasukkan')
+                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9;">
+                            @if($report->jenis_transaksi == 1)
                             <span class="badge-income">Pemasukan</span>
                             @else
                             <span class="badge-expense">Pengeluaran</span>
                             @endif
                         </td>
 
-                        <td style="font-weight: 600;">
-                            @if(strtolower($report->type) == 'pemasukan' || strtolower($report->type) == 'pemasukkan')
-                            <span class="text-green">+ Rp. {{ number_format($report->amount, 0, ',', '.') }}</span>
+                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; font-weight: 600; font-size: 0.9rem;">
+                            @if($report->jenis_transaksi == 1)
+                            <span class="text-green">+ Rp. {{ number_format($report->nominal, 0, ',', '.') }}</span>
                             @else
-                            <span class="text-red">- Rp. {{ number_format($report->amount, 0, ',', '.') }}</span>
+                            <span class="text-red">- Rp. {{ number_format($report->nominal, 0, ',', '.') }}</span>
                             @endif
+                        </td>
+
+                        <td style="padding: 15px; border-bottom: 1px solid #f1f5f9; text-align: center;">
+                            <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
+                                <button onclick="openEditModal('{{ $report->id_transaksi }}', '{{ $report->tanggal }}', '{{ (int)$report->nominal }}', '{{ $report->type }}', '{{ addslashes($report->deskripsi) }}')" style="background: none; border: none; color: #2563eb; cursor: pointer; padding: 6px; transition: color 0.2s;" title="Edit Transaksi">
+                                    <i class="fa-solid fa-pen-to-square" style="font-size: 1rem;"></i>
+                                </button>
+                                <button onclick="confirmDelete('{{ $report->id_transaksi }}')" style="background: none; border: none; color: #dc2626; cursor: pointer; padding: 6px; transition: color 0.2s;" title="Hapus Transaksi">
+                                    <i class="fa-solid fa-trash" style="font-size: 1rem;"></i>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="4" style="text-align: center; padding: 40px; color: #94a3b8; font-style: italic;">
+                        <td colspan="5" style="text-align: center; padding: 40px; color: #94a3b8; font-style: italic;">
                             Belum ada riwayat pencatatan keuangan yang sesuai dengan kriteria filter.
                         </td>
                     </tr>
@@ -524,6 +538,53 @@
         </div>
     </div>
 
+    <!-- Modal Edit Transaksi Keuangan -->
+    <div id="editModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
+        <div style="background: white; border-radius: 16px; width: 100%; max-width: 480px; padding: 32px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); position: relative;">
+            <button onclick="closeEditModal()" style="position: absolute; right: 24px; top: 24px; background: none; border: none; font-size: 1.25rem; color: #94a3b8; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+            <h3 style="font-size: 1.25rem; font-weight: 700; color: #1e293b; margin-bottom: 24px;">Edit Transaksi Keuangan</h3>
+            
+            <form id="editForm" method="POST">
+                @csrf
+                @method('PUT')
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; font-size: 0.78rem; font-weight: 600; color: #4b5563; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">Tanggal</label>
+                    <input type="date" name="date" id="editDate" required style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='#cbd5e1'">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; font-size: 0.78rem; font-weight: 600; color: #4b5563; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">Jenis Transaksi</label>
+                    <select name="type" id="editType" required style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; outline: none; background: white; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='#cbd5e1'">
+                        <option value="pemasukkan">Pemasukan</option>
+                        <option value="pengeluaran">Pengeluaran</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; font-size: 0.78rem; font-weight: 600; color: #4b5563; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">Nominal (Rp)</label>
+                    <input type="number" name="amount" id="editAmount" required min="1" style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='#cbd5e1'">
+                </div>
+
+                <div style="margin-bottom: 24px;">
+                    <label style="display: block; font-size: 0.78rem; font-weight: 600; color: #4b5563; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">Keterangan</label>
+                    <textarea name="description" id="editDescription" style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; outline: none; height: 80px; resize: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='#cbd5e1'"></textarea>
+                </div>
+
+                <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                    <button type="button" onclick="closeEditModal()" style="background: #e2e8f0; color: #4b5563; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#cbd5e1'" onmouseout="this.style.background='#e2e8f0'">Batal</button>
+                    <button type="submit" style="background: var(--primary); color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='var(--primary-dark)'" onmouseout="this.style.background='var(--primary)'">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hidden Delete Form -->
+    <form id="delete-form" method="POST" style="display: none;">
+        @csrf
+        @method('DELETE')
+    </form>
+
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
@@ -538,6 +599,27 @@
                 sidebar.classList.add('collapsed');
             }
         });
+
+        function openEditModal(id, date, amount, type, description) {
+            document.getElementById('editDate').value = date;
+            document.getElementById('editAmount').value = amount;
+            document.getElementById('editType').value = type;
+            document.getElementById('editDescription').value = description;
+            document.getElementById('editForm').action = '/admin/financial/' + id + '/update';
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        function confirmDelete(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus transaksi ini?')) {
+                const form = document.getElementById('delete-form');
+                form.action = '/admin/financial/' + id + '/delete';
+                form.submit();
+            }
+        }
     </script>
 </body>
 </html>

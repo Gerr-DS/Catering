@@ -50,13 +50,13 @@
             @csrf
 
             <div class="form-group">
-                <label for="name">Nama Lengkap</label>
-                <input type="text" id="name" name="name" required autofocus>
+                <label for="nama">Nama Lengkap</label>
+                <input type="text" id="nama" name="nama" required autofocus>
             </div>
 
             <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" required>
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
             </div>
 
             <div class="form-group">

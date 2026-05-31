@@ -58,12 +58,12 @@
                 @forelse($menus as $menu)
                     @if($menu->status)
                         <!-- Menu Item -->
-                        <a href="{{ route('menu.detail', $menu->id) }}" class="group bg-white rounded-3xl overflow-hidden border border-emerald-50/50 shadow-[0_10px_30px_rgba(26,71,42,0.03)] hover:shadow-[0_20px_45px_rgba(26,71,42,0.08)] hover:-translate-y-2 transition-all duration-500 flex flex-col justify-between text-left relative">
+                        <a href="{{ route('menu.detail', $menu->id_menu) }}" class="group bg-white rounded-3xl overflow-hidden border border-emerald-50/50 shadow-[0_10px_30px_rgba(26,71,42,0.03)] hover:shadow-[0_20px_45px_rgba(26,71,42,0.08)] hover:-translate-y-2 transition-all duration-500 flex flex-col justify-between text-left relative">
                             <span class="absolute top-4 right-4 bg-[#1a472a] text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-md tracking-wider z-10">TERSEDIA</span>
                             <div class="p-3">
                                 <div class="overflow-hidden rounded-2xl w-full h-52 mb-4 bg-gray-100">
-                                    @if($menu->image)
-                                        <img src="{{ asset('storage/menus/' . $menu->image) }}" alt="{{ $menu->name }}" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110">
+                                    @if($menu->gambar)
+                                        <img src="{{ asset('storage/menus/' . $menu->gambar) }}" alt="{{ $menu->nama_menu }}" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110">
                                     @else
                                         <div class="w-full h-full flex flex-col items-center justify-center text-gray-400 font-medium p-4">
                                             <span class="text-3xl mb-2">🍲</span>
@@ -72,14 +72,14 @@
                                     @endif
                                 </div>
                                 <div class="px-3 pb-2">
-                                    <h3 class="font-bold text-xl mb-1 text-gray-900 group-hover:text-[#1a472a] transition-colors duration-300">{{ $menu->name }}</h3>
-                                    <p class="text-xs text-gray-500 leading-relaxed line-clamp-3 mb-2">{{ $menu->description ?: 'Hidangan premium terbaik kami yang diracik khusus menggunakan bahan segar, higienis, halal, dan dijamin memuaskan selera.' }}</p>
+                                    <h3 class="font-bold text-xl mb-1 text-gray-900 group-hover:text-[#1a472a] transition-colors duration-300">{{ $menu->nama_menu }}</h3>
+                                    <p class="text-xs text-gray-500 leading-relaxed line-clamp-3 mb-2">{{ $menu->deskripsi ?: 'Hidangan premium terbaik kami yang diracik khusus menggunakan bahan segar, higienis, halal, dan dijamin memuaskan selera.' }}</p>
                                 </div>
                             </div>
                             <div class="flex justify-between items-center mt-auto px-6 pb-6 pt-4 border-t border-gray-50 bg-[#fafdfb]/50">
                                 <div class="flex flex-col">
                                     <span class="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Harga per porsi</span>
-                                    <span class="font-extrabold text-[#c28e67] text-xl font-sans tracking-tight">Rp {{ number_format($menu->price, 0, ',', '.') }}</span>
+                                    <span class="font-extrabold text-[#c28e67] text-xl font-sans tracking-tight">Rp {{ number_format($menu->harga_menu, 0, ',', '.') }}</span>
                                 </div>
                                 <span class="bg-[#1a472a] text-white px-5 py-2.5 rounded-full text-xs font-bold tracking-wider group-hover:bg-[#112d1a] group-hover:scale-105 transition-all duration-300 shadow-md">
                                     Pesan

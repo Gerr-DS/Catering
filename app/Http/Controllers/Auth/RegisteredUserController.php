@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -25,21 +25,20 @@ class RegisteredUserController extends Controller
     {
         // 1. Validasi
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'nama' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255', 'unique:admins'],
             'password' => ['required', 'confirmed'], 
         ]);
 
         // 2. Simpan ke database MySQL
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
+        $admin = Admin::create([
+            'nama' => $request->nama,
+            'username' => $request->username,
             'password' => Hash::make($request->password),
-            'role' => 'admin', // Otomatis jadi admin
         ]);
 
         // 3. Langsung login otomatis setelah daftar
-        Auth::login($user);
+        Auth::login($admin);
 
         // 4. Lempar ke Dashboard Admin
         return redirect()->intended('/admin/dashboard');

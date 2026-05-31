@@ -470,14 +470,14 @@
                 <div class="summary-icon"><i class="fa-solid fa-circle-check"></i></div>
                 <div class="summary-info">
                     <h4>Menu Ready</h4>
-                    <div class="value">{{ $menus->where('is_ready', true)->count() }}</div>
+                    <div class="value">{{ $menus->where('status_menu', '1')->count() }}</div>
                 </div>
             </div>
             <div class="summary-card theme-habis">
                 <div class="summary-icon"><i class="fa-solid fa-circle-xmark"></i></div>
                 <div class="summary-info">
                     <h4>Menu Habis</h4>
-                    <div class="value">{{ $menus->where('is_ready', false)->count() }}</div>
+                    <div class="value">{{ $menus->where('status_menu', '0')->count() }}</div>
                 </div>
             </div>
         </div>
@@ -517,12 +517,12 @@
                 </thead>
                 <tbody id="menuTableBody">
                     @forelse($menus as $menu)
-                    <tr class="menu-row" data-name="{{ strtolower($menu->name) }}" data-status="{{ $menu->status ? 'ready' : 'habis' }}">
+                    <tr class="menu-row" data-name="{{ strtolower($menu->nama_menu) }}" data-status="{{ $menu->status ? 'ready' : 'habis' }}">
                         <!-- Column Foto -->
                         <td style="padding: 12px; border-bottom: 1px solid #eee; text-align: left; vertical-align: middle;">
                             <div style="width: 56px; height: 56px; border-radius: 10px; overflow: hidden; background: #f3f4f6; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                @if($menu->image)
-                                    <img src="{{ asset('storage/menus/' . $menu->image) }}" alt="{{ $menu->name }}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                @if($menu->gambar)
+                                    <img src="{{ asset('storage/menus/' . $menu->gambar) }}" alt="{{ $menu->nama_menu }}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                     <div style="width: 100%; height: 100%; display: none; align-items: center; justify-content: center; background: #ecfdf5; color: #059669;">
                                         <i class="fa-solid fa-utensils" style="font-size: 1.15rem;"></i>
                                     </div>
@@ -534,8 +534,8 @@
                             </div>
                         </td>
 
-                        <td style="font-weight: 600; color: var(--text-dark); padding: 16px 12px; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border-bottom: 1px solid #eee; vertical-align: middle;">{{ $menu->name }}</td>
-                        <td style="color: var(--primary); font-weight: 600; padding: 16px 12px; text-align: left; border-bottom: 1px solid #eee; vertical-align: middle;">Rp {{ number_format($menu->price, 0, ',', '.') }}</td>
+                        <td style="font-weight: 600; color: var(--text-dark); padding: 16px 12px; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border-bottom: 1px solid #eee; vertical-align: middle;">{{ $menu->nama_menu }}</td>
+                        <td style="color: var(--primary); font-weight: 600; padding: 16px 12px; text-align: left; border-bottom: 1px solid #eee; vertical-align: middle;">Rp {{ number_format($menu->harga_menu, 0, ',', '.') }}</td>
                         <td style="padding: 16px 12px; text-align: left; border-bottom: 1px solid #eee; vertical-align: middle;">
                             <span class="{{ $menu->status ? 'status-ready' : 'status-soldout' }}" style="
                                 display: inline-block;
@@ -554,11 +554,11 @@
                                 <button
                                     type="button"
                                     onclick="openEditModal(
-                                        '{{ $menu->id }}',
-                                        '{{ addslashes($menu->name) }}',
-                                        '{{ $menu->price }}',
-                                        '{{ $menu->status }}',
-                                        '{{ addslashes($menu->description) }}'
+                                        '{{ $menu->id_menu }}',
+                                        '{{ addslashes($menu->nama_menu) }}',
+                                        '{{ $menu->harga_menu }}',
+                                        '{{ $menu->status_menu }}',
+                                        '{{ addslashes($menu->deskripsi) }}'
                                     )"
                                     style="
                                         background: #2563eb;
@@ -581,7 +581,7 @@
                                 
                                 <button
                                     type="button"
-                                    onclick="openDeleteModal('{{ $menu->id }}', '{{ addslashes($menu->name) }}')"
+                                    onclick="openDeleteModal('{{ $menu->id_menu }}', '{{ addslashes($menu->nama_menu) }}')"
                                     style="
                                         background: #dc2626;
                                         color: white;

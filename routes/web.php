@@ -48,25 +48,25 @@ Route::post('/register', [RegisteredUserController::class, 'store']);
 
 // 5. Rute Dashboard Admin & Keuangan (Wajib Login)
 Route::middleware(['auth'])->group(function () {
-    // Baris di bawah ini yang memastikan $income, $totalPemasukkan, dll dikirim ke layar
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::post('/admin/financial/store', [AdminDashboardController::class, 'store'])->name('admin.financial.store');
+    Route::put('/admin/financial/{id}/update', [AdminDashboardController::class, 'updateFinancial'])->name('admin.financial.update');
+    Route::delete('/admin/financial/{id}/delete', [AdminDashboardController::class, 'destroyFinancial'])->name('admin.financial.delete');
 });
 
 // 6. Rute Stock Management (Wajib Login)
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/stock', [AdminStockController::class, 'index'])->name('admin.stock.index');
     Route::post('/admin/stock/store', [AdminStockController::class, 'store'])->name('admin.stock.store');
-    Route::put('/admin/stock/{stock}/update', [AdminStockController::class, 'update'])
-    ->name('admin.stock.update');
+    Route::put('/admin/stock/{id}/update', [AdminStockController::class, 'update'])->name('admin.stock.update');
 });
 
 // 7. Rute Menu Management (Wajib Login)
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/menu', [AdminMenuController::class, 'index'])->name('admin.menu.index');
     Route::post('/admin/menu/store', [AdminMenuController::class, 'store'])->name('admin.menu.store');
-    Route::put('/admin/menu/{menu}/update', [AdminMenuController::class, 'update'])->name('admin.menu.update');
-    Route::delete('/admin/menu/{menu}/delete', [AdminMenuController::class, 'destroy'])->name('admin.menu.delete');
+    Route::put('/admin/menu/{id}/update', [AdminMenuController::class, 'update'])->name('admin.menu.update');
+    Route::delete('/admin/menu/{id}/delete', [AdminMenuController::class, 'destroy'])->name('admin.menu.delete');
 });
 Route::middleware(['auth'])->group(function () {
 

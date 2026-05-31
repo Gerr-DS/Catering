@@ -59,8 +59,8 @@
                 <!-- Gambar Produk -->
                 <div class="md:w-1/2 relative overflow-hidden group">
                     <span class="absolute top-4 left-4 bg-gradient-to-r from-[#d4a373] to-[#b07d56] text-white text-[10px] font-bold px-3.5 py-1.5 rounded-full shadow-md tracking-wider uppercase z-10">Pilihan Spesial</span>
-                    @if($menu->image)
-                        <img src="{{ asset('storage/menus/' . $menu->image) }}" alt="{{ $menu->name }}" class="w-full h-72 md:h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 min-h-[350px]">
+                    @if($menu->gambar)
+                        <img src="{{ asset('storage/menus/' . $menu->gambar) }}" alt="{{ $menu->nama_menu }}" class="w-full h-72 md:h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 min-h-[350px]">
                     @else
                         <div class="w-full h-72 md:h-full bg-[#f4f6f4] flex flex-col items-center justify-center text-gray-400 p-6 min-h-[350px]">
                             <i class="fas fa-image text-5xl mb-3 text-gray-300"></i>
@@ -72,17 +72,17 @@
                 <!-- Informasi Produk -->
                 <div class="md:w-1/2 p-8 md:p-10 flex flex-col justify-center bg-white">
                     <span class="text-[#c28e67] font-bold tracking-widest text-[11px] mb-2 uppercase block">KATERING PREMIUM</span>
-                    <h1 id="nama-menu" class="text-3xl font-extrabold text-gray-900 mb-2 tracking-tight">{{ $menu->name }}</h1>
+                    <h1 id="nama-menu" class="text-3xl font-extrabold text-gray-900 mb-2 tracking-tight">{{ $menu->nama_menu }}</h1>
                     
                     <h2 class="text-2xl font-black text-[#1a472a] mb-5 flex items-baseline gap-1">
-                        Rp <span id="harga-satuan-text">{{ number_format($menu->price, 0, ',', '.') }}</span>
+                        Rp <span id="harga-satuan-text">{{ number_format($menu->harga_menu, 0, ',', '.') }}</span>
                         <span class="text-xs text-gray-400 font-normal tracking-wide lowercase">/ porsi</span>
                     </h2>
                     
                     <div class="mb-6">
                         <h3 class="text-xs font-bold text-gray-800 uppercase tracking-wider mb-2">Deskripsi Hidangan</h3>
                         <p class="text-sm text-gray-500 leading-relaxed">
-                            {{ $menu->description ?: 'Hidangan premium terbaik kami yang diracik khusus menggunakan bahan baku pilihan segar, higienis, halal, dan dijamin memuaskan selera bersantap Anda sekeluarga.' }}
+                            {{ $menu->deskripsi ?: 'Hidangan premium terbaik kami yang diracik khusus menggunakan bahan baku pilihan segar, higienis, halal, dan dijamin memuaskan selera bersantap Anda sekeluarga.' }}
                         </p>
                     </div>
 
@@ -99,7 +99,7 @@
                         </div>
                         <div class="flex justify-between items-center pt-4 border-t border-gray-100">
                             <span class="text-sm font-bold text-gray-800">Total Harga:</span>
-                            <span class="text-xl font-extrabold text-[#c28e67] font-sans tracking-tight">Rp <span id="total-harga">{{ number_format($menu->price, 0, ',', '.') }}</span></span>
+                            <span class="text-xl font-extrabold text-[#c28e67] font-sans tracking-tight">Rp <span id="total-harga">{{ number_format($menu->harga_menu, 0, ',', '.') }}</span></span>
                         </div>
                     </div>
 
@@ -131,7 +131,7 @@
 
     <!-- Skrip Logika Harga & WhatsApp -->
     <script>
-        const hargaSatuan = {{ $menu->price }};
+        const hargaSatuan = {{ $menu->harga_menu }};
         let porsiSaatIni = 1;
 
         // Porsi Minimum diset 20 porsi jika menu katering (sesuai FAQ)

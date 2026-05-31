@@ -10,21 +10,24 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::create('stocks', function (Blueprint $table) {
-        $table->id();
-        $table->string('name'); // Nama bahan (cth: Beras, Ayam)
-        $table->integer('quantity'); // Jumlah stok
-        $table->string('unit'); // Satuan (cth: Kg, Liter, Pcs)
-        $table->timestamps();
-    });
-}
+    {
+        Schema::create('stok_bahans', function (Blueprint $table) {
+            $table->id('id_stok');
+            $table->unsignedBigInteger('id_admin');
+            $table->string('nama_bahan');
+            $table->integer('jumlah_stok');
+            $table->string('satuan');
+            $table->timestamps();
+
+            $table->foreign('id_admin')->references('id_admin')->on('admins')->onDelete('cascade');
+        });
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('stocks');
+        Schema::dropIfExists('stok_bahans');
     }
 };

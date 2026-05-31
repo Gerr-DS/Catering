@@ -10,21 +10,22 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::create('financials', function (Blueprint $table) {
-        $table->id();
-        $table->enum('type', ['pemasukkan', 'pengeluaran']);
-        $table->bigInteger('amount');
-        $table->string('description')->nullable();
-        $table->timestamps();
-    });
-}
+    {
+        Schema::create('laporans', function (Blueprint $table) {
+            $table->id('id_laporan');
+            $table->unsignedBigInteger('id_admin');
+            $table->string('periode');
+            $table->timestamps();
+
+            $table->foreign('id_admin')->references('id_admin')->on('admins')->onDelete('cascade');
+        });
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('financials');
+        Schema::dropIfExists('laporans');
     }
 };

@@ -59,7 +59,7 @@
     <tbody>
         @foreach($reports as $report)
         <tr>
-            <td style="border: 1px solid #cbd5e1;">{{ $report->created_at->format('d M Y, H:i') }} WIB</td>
+            <td style="border: 1px solid #cbd5e1;">{{ \Carbon\Carbon::parse($report->tanggal)->format('d M Y') }}</td>
             <td style="border: 1px solid #cbd5e1;">{{ strtolower($report->type) == 'pemasukan' || strtolower($report->type) == 'pemasukkan' ? 'Pemasukan' : 'Pengeluaran' }}</td>
             <td style="border: 1px solid #cbd5e1;">{{ $report->description ?? 'Tidak ada keterangan' }}</td>
             <td style="border: 1px solid #cbd5e1; text-align: right; font-weight: 600; color: {{ strtolower($report->type) == 'pemasukan' || strtolower($report->type) == 'pemasukkan' ? '#16a34a' : '#dc2626' }};">

@@ -640,21 +640,21 @@
                 <div class="summary-icon"><i class="fa-solid fa-circle-check"></i></div>
                 <div class="summary-info">
                     <h4>Stok Aman</h4>
-                    <div class="value">{{ $stocks->where('quantity', '>', 50)->count() }}</div>
+                    <div class="value">{{ $stocks->where('jumlah_stok', '>', 10)->count() }}</div>
                 </div>
             </div>
             <div class="summary-card theme-menipis">
                 <div class="summary-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
                 <div class="summary-info">
                     <h4>Stok Menipis</h4>
-                    <div class="value">{{ $stocks->filter(fn($s) => $s->quantity >= 11 && $s->quantity <= 50)->count() }}</div>
+                    <div class="value">{{ $stocks->filter(fn($s) => $s->jumlah_stok >= 1 && $s->jumlah_stok <= 10)->count() }}</div>
                 </div>
             </div>
             <div class="summary-card theme-habis">
                 <div class="summary-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
                 <div class="summary-info">
                     <h4>Stok Habis</h4>
-                    <div class="value">{{ $stocks->where('quantity', 0)->count() }}</div>
+                    <div class="value">{{ $stocks->where('jumlah_stok', 0)->count() }}</div>
                 </div>
             </div>
         </div>
@@ -684,25 +684,21 @@
                     <tbody id="stockTableBody">
                         @forelse($stocks as $index => $stock)
                         @php
-                            $qty = $stock->quantity;
+                            $qty = $stock->jumlah_stok;
                             $rowClass = '';
                             $warningLabel = '';
                             $badgeClass = '';
                             $badgeText = '';
                             
-                            if ($qty > 50) {
+                            if ($qty > 10) {
                                 $rowClass = '';
                                 $badgeClass = 'aman';
                                 $badgeText = '🟢 Aman';
-                            } elseif ($qty >= 11 && $qty <= 50) {
-                                $rowClass = '';
-                                $badgeClass = 'menipis';
-                                $badgeText = '🟡 Menipis';
                             } elseif ($qty >= 1 && $qty <= 10) {
                                 $rowClass = 'low-stock-warning';
-                                $badgeClass = 'hampir-habis';
-                                $badgeText = '🔴 Hampir Habis';
-                                $warningLabel = '<span class="warning-label warning"><i class="fa-solid fa-triangle-exclamation"></i> Stok Hampir Habis</span>';
+                                $badgeClass = 'menipis';
+                                $badgeText = '🟡 Menipis';
+                                $warningLabel = '<span class="warning-label warning"><i class="fa-solid fa-triangle-exclamation"></i> Stok Menipis</span>';
                             } else {
                                 $rowClass = 'low-stock-critical';
                                 $badgeClass = 'habis';
@@ -710,22 +706,22 @@
                                 $warningLabel = '<span class="warning-label critical"><i class="fa-solid fa-triangle-exclamation"></i> Stok Habis</span>';
                             }
                         @endphp
-                        <tr class="{{ $rowClass }} stock-row" data-name="{{ strtolower($stock->name) }}">
+                        <tr class="{{ $rowClass }} stock-row" data-name="{{ strtolower($stock->nama_bahan) }}">
                             <td>{{ $index + 1 }}</td>
                             <td style="font-weight: 500;">
-                                {{ $stock->name }}
+                                {{ $stock->nama_bahan }}
                                 {!! $warningLabel !!}
                             </td>
-                            <td>{{ $qty }} <span style="color:#6b7280; font-size:0.85rem;">{{ $stock->unit }}</span></td>
+                            <td>{{ $qty }} <span style="color:#6b7280; font-size:0.85rem;">{{ $stock->satuan }}</span></td>
                             <td>
                                 <span class="status-badge {{ $badgeClass }}">{{ $badgeText }}</span>
                             </td>
                             <td>
                                 <div class="action-buttons">
-                                    <button onclick="openEditModal('{{ $stock->id }}', '{{ addslashes($stock->name) }}', '{{ $qty }}', '{{ addslashes($stock->unit) }}')" class="action-btn edit" title="Edit Bahan Baku">
+                                    <button onclick="openEditModal('{{ $stock->id_stok }}', '{{ addslashes($stock->nama_bahan) }}', '{{ $qty }}', '{{ addslashes($stock->satuan) }}')" class="action-btn edit" title="Edit Bahan Baku">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
-                                    <button onclick="simulateDelete(this, '{{ addslashes($stock->name) }}')" class="action-btn delete" title="Hapus Bahan Baku">
+                                    <button onclick="simulateDelete(this, '{{ addslashes($stock->nama_bahan) }}')" class="action-btn delete" title="Hapus Bahan Baku">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
                                 </div>
