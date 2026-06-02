@@ -153,7 +153,7 @@
         function pesanKeWA() {
             const namaMenu = document.getElementById('nama-menu').innerText;
             const totalHarga = document.getElementById('total-harga').innerText;
-            const nomorAdmin = "6281234567890"; // Ganti nomor ini
+            const nomorAdmin = "6282114352721"; // Ganti nomor ini
 
             const teksPesan = `Halo *Hafidz Catering*, saya ingin memesan:\n\n` +
                               `🍱 *Menu:* ${namaMenu}\n` +

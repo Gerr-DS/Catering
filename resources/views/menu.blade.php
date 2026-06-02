@@ -95,7 +95,7 @@
                         <span class="text-4xl block mb-4">🍲</span>
                         <h3 class="text-lg font-bold text-gray-700 mb-2">Belum Ada Menu Tersedia</h3>
                         <p class="text-sm text-gray-500 max-w-sm mx-auto mb-6">Maaf, saat ini seluruh hidangan katering kami sedang tidak tersedia atau habis dipesan. Silakan hubungi kami langsung via WhatsApp untuk pemesanan khusus!</p>
-                        <a href="https://wa.me/6281234567890?text=Halo%20Admin%20Hafidz%20Catering,%20saya%20ingin%20memesan%20katering" target="_blank" class="inline-flex items-center gap-2 bg-[#25d366] hover:bg-[#20ba59] text-white px-6 py-2.5 rounded-full text-sm font-semibold transition shadow-md hover:shadow-lg">
+                        <a href="https://wa.me/6282114352721?text=Halo%20Admin%20Hafidz%20Catering,%20saya%20ingin%20memesan%20katering" target="_blank" class="inline-flex items-center gap-2 bg-[#25d366] hover:bg-[#20ba59] text-white px-6 py-2.5 rounded-full text-sm font-semibold transition shadow-md hover:shadow-lg">
                             <i class="fab fa-whatsapp text-base"></i> Hubungi WhatsApp Admin
                         </a>
                     </div>
