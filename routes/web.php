@@ -32,7 +32,7 @@ Route::redirect('/', '/dashboard');
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
-Route::post('/login', [LoginController::class, 'login']);
+Route::post('/login', [LoginController::class, 'login'])->middleware('throttle:5,1');
 
 // 3. Rute Logout
 Route::post('/logout', function (\Illuminate\Http\Request $request) {
@@ -70,9 +70,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/admin/menu/{id}/delete', [AdminMenuController::class, 'destroy'])->name('admin.menu.delete');
 });
 Route::middleware(['auth'])->group(function () {
-
     Route::get('/admin/reports/pdf', [ReportExportController::class, 'exportPdf'])
         ->name('admin.reports.pdf');
+    Route::get('/admin/reports', [App\Http\Controllers\AdminDashboardController::class, 'reports'])->name('admin.reports');
 });
-// 9.
-Route::get('/admin/reports', [App\Http\Controllers\AdminDashboardController::class, 'reports'])->name('admin.reports');

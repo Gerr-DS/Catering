@@ -48,8 +48,11 @@
     <section class="py-16">
         <div class="container mx-auto px-4 max-w-6xl">
             <div class="text-center mb-16">
-                <span class="text-xs text-[#c28e67] font-bold tracking-widest uppercase bg-[#c28e67]/10 px-3.5 py-1.5 rounded-full">Menu Nusantara</span>
-                <h1 class="text-4xl font-extrabold mt-4 mb-4 text-[#1a472a] tracking-tight md:text-5xl">Daftar Menu Kami</h1>
+                <div class="flex items-center justify-center gap-2 mb-4 flex-wrap">
+                    <span class="text-xs text-[#c28e67] font-bold tracking-widest uppercase bg-[#c28e67]/10 px-3.5 py-1.5 rounded-full">Menu Nusantara</span>
+                    <span class="text-xs text-[#1a472a] font-bold tracking-widest uppercase bg-green-50 px-3.5 py-1.5 rounded-full border border-green-100/80">{{ $menus->where('status', true)->count() }} Menu Tersedia</span>
+                </div>
+                <h1 class="text-4xl font-extrabold mt-2 mb-4 text-[#1a472a] tracking-tight md:text-5xl">Daftar Menu Kami</h1>
                 <p class="text-gray-500 max-w-md mx-auto text-sm md:text-base">Pilih hidangan lezat berkualitas premium untuk melengkapi momen istimewa Anda.</p>
             </div>
 

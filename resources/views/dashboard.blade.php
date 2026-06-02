@@ -754,7 +754,7 @@
             border-radius: 28px;
             overflow: hidden;
             box-shadow: 0 15px 40px rgba(26, 71, 42, 0.06);
-            margin-bottom: 45px;
+            margin-bottom: 40px;
             height: 400px;
             border: 1px solid rgba(26, 71, 42, 0.07);
             transition: var(--transition);
@@ -924,6 +924,7 @@
         <div style="width: 100%; max-width: 1200px; display: flex; flex-direction: column; align-items: center;">
             <h2 style="font-size: 2.2rem; font-weight: 700; color: #1a472a; margin-bottom: 30px; text-align: center; position: relative; font-family: 'Poppins', sans-serif;">
                 Menu Kami
+                <span style="display: block; font-size: 0.9rem; font-weight: 500; color: #c28e67; margin-top: 8px;">Tersedia {{ $menus->where('status', true)->count() }} Pilihan Hidangan Lezat</span>
                 <span style="display: block; width: 60px; height: 4px; background-color: #1a472a; margin: 10px auto 0; border-radius: 2px;"></span>
             </h2>
             <div class="menu-horizontal-scroll" style="width: 100%;">
@@ -966,7 +967,7 @@
                         <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; max-width: 480px; margin: 0 auto 25px auto;">
                             Maaf, saat ini seluruh hidangan katering kami sedang tidak tersedia atau habis dipesan. Silakan hubungi kami langsung via WhatsApp untuk pemesanan khusus!
                         </p>
-                        <a href="https://wa.me/6281234567890?text=Halo%20Admin%20Hafidz%20Catering,%20saya%20ingin%20bertanya%20mengenai%20pemesanan%20katering" target="_blank" class="social-btn wa-btn" style="display: inline-flex; justify-content: center; margin: 0 auto;">
+                        <a href="https://wa.me/6282114352721?text=Halo%20Admin%20Hafidz%20Catering,%20saya%20ingin%20bertanya%20mengenai%20pemesanan%20katering" target="_blank" class="social-btn wa-btn" style="display: inline-flex; justify-content: center; margin: 0 auto;">
                             <i class="fab fa-whatsapp" style="font-size: 1.25rem;"></i> Hubungi WhatsApp Admin
                         </a>
                     </div>
@@ -1049,14 +1050,11 @@
     <div class="contact-section" id="contact-section">
         <h2>Lokasi & Hubungi Kami</h2>
         <div class="map-container">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126901.32594614131!2d106.72973970638531!3d-6.594432804566367!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c4d2899478f7%3A0x6b49e32a67e5108!2sBogor%2C+Jawa+Barat!5e0!3m2!1sid!2sid!4v1715000000000!5m2!1sid!2sid" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.535090448107!2d106.77884177498335!3d-6.580227193412959!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c5003a2e03ab%3A0xf8fd8230520d0d73!2sTaman%20Cimanggu%2C%20Jl.%20Amarilis%205%20Blok%20V%20-%20XI%20No.9%2C%20RT.02%2C%20Bogor%20Barat!5e0!3m2!1sid!2sid!4v1715000000000!5m2!1sid!2sid" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
         <div class="social-buttons" id="social-section">
-            <a href="https://wa.me/6281234567890?text=Halo%20Admin%20Hafidz%20Catering,%20saya%20ingin%20memesan%20katering" class="social-btn wa-btn" target="_blank">
+            <a href="https://wa.me/6282114352721?text=Halo%20Admin%20Hafidz%20Catering,%20saya%20ingin%20memesan%20katering" class="social-btn wa-btn" target="_blank">
                 <i class="fab fa-whatsapp" style="font-size: 1.3rem;"></i> Hubungi WhatsApp
-            </a>
-            <a href="https://instagram.com/hafidzcatering" class="social-btn ig-btn" target="_blank">
-                <i class="fab fa-instagram" style="font-size: 1.3rem;"></i> Lihat Instagram
             </a>
         </div>
     </div>
