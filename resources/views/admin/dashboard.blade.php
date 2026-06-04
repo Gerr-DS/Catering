@@ -464,10 +464,16 @@
                 padding: 30px 20px !important;
             }
 
-            .main-wrapper,
+            .main-wrapper {
+                width: 100% !important;
+                padding: 0 !important;
+                overflow: hidden !important;
+            }
+
             .main-content {
                 width: 100% !important;
-                padding: 15px !important;
+                padding: 12px !important;
+                overflow-x: hidden !important;
             }
 
             .top-header {
@@ -479,88 +485,123 @@
             }
 
             .financial-grid {
-                grid-template-columns: 1.15fr 1.5fr !important;
-                gap: 12px !important;
-                margin-bottom: 20px !important;
+                grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.5fr) !important;
+                gap: 8px !important;
+                margin-bottom: 16px !important;
             }
 
             .financial-grid .card,
             .financial-grid .stat-box {
-                padding: 12px !important;
+                padding: 10px !important;
             }
 
             .financial-grid .income-card .amount {
-                font-size: 1.6rem !important;
+                font-size: 1.25rem !important;
             }
 
             .financial-grid .stat-box .amount {
-                font-size: 1.15rem !important;
+                font-size: 0.95rem !important;
             }
 
             .financial-grid .side-stats {
-                gap: 12px !important;
+                gap: 8px !important;
             }
 
             .financial-grid .income-card h3 {
                 margin-bottom: 8px !important;
-                font-size: 0.85rem !important;
+                font-size: 0.75rem !important;
             }
 
             .financial-grid .stat-box h3 {
                 margin-bottom: 6px !important;
-                font-size: 0.8rem !important;
+                font-size: 0.72rem !important;
+            }
+
+            .chart-container {
+                padding: 12px !important;
+                margin-bottom: 20px !important;
+            }
+
+            .chart-header {
+                margin-bottom: 12px !important;
+                gap: 8px !important;
+            }
+
+            .chart-title h3 {
+                font-size: 0.95rem !important;
+            }
+
+            .chart-title p {
+                font-size: 0.7rem !important;
+            }
+
+            .chart-title > div {
+                flex-wrap: wrap !important;
+                white-space: normal !important;
+                gap: 6px !important;
+            }
+
+            .period-selector {
+                gap: 1px !important;
+                padding: 2px !important;
+                width: 100% !important;
+                justify-content: space-between !important;
+            }
+
+            .period-btn {
+                padding: 4px 6px !important;
+                font-size: 0.7rem !important;
+                flex: 1 !important;
+                text-align: center !important;
             }
 
             .form-grid {
-                grid-template-columns: 1fr 1fr !important;
-                gap: 12px !important;
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+                gap: 8px !important;
             }
 
             .form-card {
-                padding: 12px !important;
+                padding: 10px !important;
                 border-radius: 12px !important;
             }
 
             .form-card h3 {
-                margin-bottom: 12px !important;
-                font-size: 0.85rem !important;
+                margin-bottom: 8px !important;
+                font-size: 0.8rem !important;
                 text-align: center;
             }
 
             .form-icon {
-                width: 44px !important;
-                height: 44px !important;
-                margin-bottom: 10px !important;
+                width: 36px !important;
+                height: 36px !important;
+                margin-bottom: 6px !important;
             }
 
             .form-icon i {
-                font-size: 1.5rem !important;
+                font-size: 1.25rem !important;
             }
 
             .form-card p {
-                font-size: 0.72rem !important;
-                margin-bottom: 12px !important;
-                line-height: 1.3;
+                display: none !important;
             }
 
             .input-group {
-                margin-bottom: 10px !important;
+                margin-bottom: 8px !important;
             }
 
             .input-group input {
-                padding: 8px 10px !important;
-                font-size: 0.8rem !important;
-                border-radius: 8px !important;
+                padding: 6px 8px !important;
+                font-size: 0.75rem !important;
+                border-radius: 6px !important;
             }
 
             .btn-pengeluaran,
             .btn-pemasukkan {
-                padding: 8px 6px !important;
-                font-size: 0.75rem !important;
-                border-radius: 8px !important;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
+                padding: 8px 4px !important;
+                font-size: 0.72rem !important;
+                border-radius: 6px !important;
+                white-space: normal !important;
+                line-height: 1.2 !important;
             }
         }
     </style>
