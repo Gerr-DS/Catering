@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu Management - HafidzManage</title>
+    <title>Manajemen Menu - HafidzManage</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -686,7 +686,7 @@
                 </div>
                 <div class="sidebar-header-text">
                     <h2>Hafidz Catering</h2>
-                    <span>MANAGEMENT PORTAL</span>
+                    <span>PORTAL MANAJEMEN</span>
                 </div>
             </div>
             <button class="sidebar-close-btn" onclick="toggleSidebar()" style="display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">
@@ -704,19 +704,19 @@
             <li>
                 <a href="{{ route('admin.stock.index') }}">
                     <i class="fa-solid fa-box"></i>
-                    <span>Stock Management</span>
+                    <span>Manajemen Stok</span>
                 </a>
             </li>
             <li>
                 <a href="{{ route('admin.menu.index') }}" class="active">
                     <i class="fa-solid fa-list"></i>
-                    <span>Menu Management</span>
+                    <span>Manajemen Menu</span>
                 </a>
             </li>
             <li>
                 <a href="{{ route('admin.reports') }}">
                     <i class="fa-solid fa-chart-line"></i>
-                    <span>Reports</span>
+                    <span>Laporan Keuangan</span>
                 </a>
             </li>
         </ul>
@@ -726,7 +726,7 @@
                 @csrf
                 <button type="submit">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                    <span>Logout</span>
+                    <span>Keluar</span>
                 </button>
             </form>
         </div>
@@ -738,7 +738,7 @@
                 <i class="fa-solid fa-bars"></i>
             </button>
             <div class="header-title">
-                <h1>Menu Management</h1>
+                <h1>Manajemen Menu</h1>
                 <p>Atur menu yang tampil di halaman pembeli.</p>
             </div>
         </div>
@@ -761,7 +761,7 @@
             <div class="summary-card theme-aman">
                 <div class="summary-icon"><i class="fa-solid fa-circle-check"></i></div>
                 <div class="summary-info">
-                    <h4>Menu Ready</h4>
+                    <h4>Menu Tersedia</h4>
                     <div class="value">{{ $menus->where('status_menu', '1')->count() }}</div>
                 </div>
             </div>
@@ -787,7 +787,7 @@
                     <!-- Filter pills -->
                     <div class="filter-pills">
                         <button class="filter-pill active" data-filter="semua">Semua</button>
-                        <button class="filter-pill" data-filter="ready">Ready</button>
+                        <button class="filter-pill" data-filter="ready">Tersedia</button>
                         <button class="filter-pill" data-filter="habis">Habis</button>
                     </div>
                 </div>
@@ -832,7 +832,7 @@
                         <td>
                             <span class="status-badge {{ $menu->status ? 'ready' : 'habis' }}">
                                 <i class="fa-solid {{ $menu->status ? 'fa-circle-check' : 'fa-circle-xmark' }}"></i>
-                                {{ $menu->status ? 'Ready' : 'Habis' }}
+                                {{ $menu->status ? 'Tersedia' : 'Habis' }}
                             </span>
                         </td>
                         <td>
@@ -911,7 +911,7 @@
                 <div class="form-group">
                     <label>Status</label>
                     <select name="status" class="form-control">
-                        <option value="1">Ready</option>
+                        <option value="1">Tersedia</option>
                         <option value="0">Habis</option>
                     </select>
                 </div>
@@ -933,7 +933,7 @@
     <div id="editModal" class="modal">
         <div class="modal-content">
             <button onclick="closeEditModal()" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
-            <h3 class="modal-title">Edit Menu</h3>
+            <h3 class="modal-title">Ubah Menu</h3>
 
             <form id="editForm" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -957,7 +957,7 @@
                 <div class="form-group">
                     <label>Status</label>
                     <select name="status" id="editStatus" class="form-control">
-                        <option value="1">Ready</option>
+                        <option value="1">Tersedia</option>
                         <option value="0">Habis</option>
                     </select>
                 </div>

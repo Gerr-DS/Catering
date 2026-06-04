@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reports - HafidzManage</title>
+    <title>Laporan Keuangan - HafidzManage</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -363,7 +363,7 @@
                 </div>
                 <div class="sidebar-header-text">
                     <h2>Hafidz Catering</h2>
-                    <span>MANAGEMENT PORTAL</span>
+                    <span>PORTAL MANAJEMEN</span>
                 </div>
             </div>
             <button class="sidebar-close-btn" onclick="toggleSidebar()" style="display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">
@@ -381,19 +381,19 @@
             <li>
                 <a href="{{ route('admin.stock.index') }}">
                     <i class="fa-solid fa-box"></i>
-                    <span>Stock Management</span>
+                    <span>Manajemen Stok</span>
                 </a>
             </li>
             <li>
                 <a href="{{ route('admin.menu.index') }}">
                     <i class="fa-solid fa-list"></i>
-                    <span>Menu Management</span>
+                    <span>Manajemen Menu</span>
                 </a>
             </li>
             <li>
                 <a href="{{ route('admin.reports') }}" class="active">
                     <i class="fa-solid fa-chart-line"></i>
-                    <span>Reports</span>
+                    <span>Laporan Keuangan</span>
                 </a>
             </li>
         </ul>
@@ -403,7 +403,7 @@
                 @csrf
                 <button type="submit">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                    <span>Logout</span>
+                    <span>Keluar</span>
                 </button>
             </form>
         </div>
@@ -594,7 +594,7 @@
     <div id="editModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
         <div style="background: white; border-radius: 16px; width: 100%; max-width: 480px; padding: 32px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); position: relative;">
             <button onclick="closeEditModal()" style="position: absolute; right: 24px; top: 24px; background: none; border: none; font-size: 1.25rem; color: #94a3b8; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
-            <h3 style="font-size: 1.25rem; font-weight: 700; color: #1e293b; margin-bottom: 24px;">Edit Transaksi Keuangan</h3>
+            <h3 style="font-size: 1.25rem; font-weight: 700; color: #1e293b; margin-bottom: 24px;">Ubah Transaksi Keuangan</h3>
             
             <form id="editForm" method="POST">
                 @csrf

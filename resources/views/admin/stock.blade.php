@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Management - HafidzManage</title>
+    <title>Manajemen Stok - HafidzManage</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -717,7 +717,7 @@
                 </div>
                 <div class="sidebar-header-text">
                     <h2>Hafidz Catering</h2>
-                    <span>MANAGEMENT PORTAL</span>
+                    <span>PORTAL MANAJEMEN</span>
                 </div>
             </div>
             <button class="sidebar-close-btn" onclick="toggleSidebar()" style="display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">
@@ -735,19 +735,19 @@
             <li>
                 <a href="{{ route('admin.stock.index') }}" class="active">
                     <i class="fa-solid fa-box"></i>
-                    <span>Stock Management</span>
+                    <span>Manajemen Stok</span>
                 </a>
             </li>
             <li>
                 <a href="{{ route('admin.menu.index') }}">
                     <i class="fa-solid fa-list"></i>
-                    <span>Menu Management</span>
+                    <span>Manajemen Menu</span>
                 </a>
             </li>
             <li>
                 <a href="{{ route('admin.reports') }}">
                     <i class="fa-solid fa-chart-line"></i>
-                    <span>Reports</span>
+                    <span>Laporan Keuangan</span>
                 </a>
             </li>
         </ul>
@@ -757,7 +757,7 @@
                 @csrf
                 <button type="submit">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                    <span>Logout</span>
+                    <span>Keluar</span>
                 </button>
             </form>
         </div>
@@ -769,7 +769,7 @@
                 <i class="fa-solid fa-bars"></i>
             </button>
             <div class="header-title">
-                <h1>Stock Management</h1>
+                <h1>Manajemen Stok</h1>
                 <p>Pantau ketersediaan bahan baku katering Anda.</p>
             </div>
         </div>
@@ -1076,7 +1076,7 @@
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
-            <h2 style="margin-bottom:20px; font-weight: 700; color: #111827;">Edit Stock</h2>
+            <h2 style="margin-bottom:20px; font-weight: 700; color: #111827;">Ubah Stok</h2>
 
             <form id="editForm" method="POST">
                 @csrf

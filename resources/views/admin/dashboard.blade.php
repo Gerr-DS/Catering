@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial Overview - HafidzManage</title>
+    <title>Ringkasan Keuangan - HafidzManage</title>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -578,7 +578,7 @@
 
                 <div class="sidebar-header-text">
                     <h2>Hafidz Catering</h2>
-                    <span>MANAGEMENT PORTAL</span>
+                    <span>PORTAL MANAJEMEN</span>
                 </div>
             </div>
             <button class="sidebar-close-btn" onclick="toggleSidebar()" style="display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">
@@ -597,21 +597,21 @@
             <li>
                 <a href="{{ route('admin.stock.index') }}">
                     <i class="fa-solid fa-box"></i>
-                    <span>Stock Management</span>
+                    <span>Manajemen Stok</span>
                 </a>
             </li>
 
             <li>
                 <a href="{{ route('admin.menu.index') }}">
                     <i class="fa-solid fa-list"></i>
-                    <span>Menu Management</span>
+                    <span>Manajemen Menu</span>
                 </a>
             </li>
 
             <li>
                 <a href="{{ route('admin.reports') }}">
                     <i class="fa-solid fa-chart-line"></i>
-                    <span>Reports</span>
+                    <span>Laporan Keuangan</span>
                 </a>
             </li>
         </ul>
@@ -622,7 +622,7 @@
 
                 <button type="submit">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                    <span>Logout</span>
+                    <span>Keluar</span>
                 </button>
             </form>
         </div>
@@ -636,7 +636,7 @@
                 <i class="fa-solid fa-bars"></i>
             </button>
             <div class="header-title">
-                <h1>Financial Overview</h1>
+                <h1>Ringkasan Keuangan</h1>
                 <p>Ringkasan kinerja operasional Hafidz Catering harian.</p>
             </div>
         </div>
@@ -672,7 +672,7 @@
                 </div>
 
                 <div class="card income-card">
-                    <h3>Income (Pendapatan Bersih)</h3>
+                    <h3>Pendapatan Bersih (Net Income)</h3>
 
                     <div class="amount" id="incomeAmount">
                         Rp. {{ number_format($income ?? 0, 0, ',', '.') }}
