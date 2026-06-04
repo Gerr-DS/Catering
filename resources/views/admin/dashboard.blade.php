@@ -466,14 +466,19 @@
 
             .main-wrapper {
                 width: 100% !important;
+                height: 100vh !important;
+                display: flex !important;
+                flex-direction: column !important;
                 padding: 0 !important;
                 overflow: hidden !important;
             }
 
             .main-content {
                 width: 100% !important;
+                flex: 1 !important;
                 padding: 12px !important;
                 overflow-x: hidden !important;
+                overflow-y: auto !important;
             }
 
             .top-header {
