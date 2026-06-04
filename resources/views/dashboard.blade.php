@@ -980,7 +980,6 @@
         <div style="width: 100%; max-width: 1200px; display: flex; flex-direction: column; align-items: center;">
             <h2 style="font-size: 2.2rem; font-weight: 700; color: #1a472a; margin-bottom: 30px; text-align: center; position: relative; font-family: 'Poppins', sans-serif;">
                 Menu Kami
-                <span style="display: block; font-size: 0.9rem; font-weight: 500; color: #c28e67; margin-top: 8px;">Tersedia {{ $menus->where('status', true)->count() }} Pilihan Hidangan Lezat</span>
                 <span style="display: block; width: 60px; height: 4px; background-color: #1a472a; margin: 10px auto 0; border-radius: 2px;"></span>
             </h2>
             <div class="menu-horizontal-scroll" style="width: 100%;">
