@@ -289,20 +289,86 @@
             opacity: 0.5;
             cursor: not-allowed;
         }
+
+        @media (max-width: 768px) {
+            body {
+                position: relative;
+            }
+
+            .sidebar {
+                position: fixed !important;
+                left: 0;
+                top: 0;
+                height: 100vh !important;
+                z-index: 1000 !important;
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                transform: translateX(0);
+                width: 260px !important;
+                padding: 30px 20px !important;
+                border-right: 1px solid var(--border-color) !important;
+                box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+            }
+
+            .sidebar.collapsed {
+                transform: translateX(-100%) !important;
+                width: 260px !important;
+                border-right: none !important;
+                padding: 30px 20px !important;
+            }
+
+            .main-content {
+                width: 100% !important;
+                padding: 15px !important;
+            }
+
+            .sidebar-close-btn {
+                display: block !important;
+            }
+
+            form[action*="reports"] {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* Responsive tables styling */
+            .table-responsive {
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                border-radius: 8px;
+                border: 1px solid #cbd5e1;
+                margin-bottom: 15px;
+            }
+
+            .table-responsive table {
+                min-width: 600px;
+            }
+
+            .pagination-container {
+                flex-direction: column !important;
+                gap: 12px !important;
+                align-items: center !important;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 
 <body>
 
     <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="logo-icon">
-                <i class="fa-solid fa-utensils"></i>
+        <div class="sidebar-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-utensils"></i>
+                </div>
+                <div class="sidebar-header-text">
+                    <h2>Hafidz Catering</h2>
+                    <span>MANAGEMENT PORTAL</span>
+                </div>
             </div>
-            <div class="sidebar-header-text">
-                <h2>Hafidz Catering</h2>
-                <span>MANAGEMENT PORTAL</span>
-            </div>
+            <button class="sidebar-close-btn" onclick="toggleSidebar()" style="display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
         </div>
 
         <ul class="sidebar-menu">
@@ -431,6 +497,7 @@
         </form>
 
         <div class="card">
+            <div class="table-responsive">
             <table style="width: 100%; border-collapse: collapse;">
                 <thead>
                     <tr>
@@ -486,10 +553,11 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>
 
             <!-- Elegant custom Laravel Pagination Bar -->
             @if($reports->hasPages())
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid #f1f5f9; flex-wrap: wrap; gap: 16px;">
+            <div class="pagination-container" style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid #f1f5f9; flex-wrap: wrap; gap: 16px;">
                 <div style="font-size: 0.85rem; color: #64748b;">
                     Menampilkan <span style="font-weight: 600; color: #1e293b;">{{ $reports->firstItem() }}</span> - <span style="font-weight: 600; color: #1e293b;">{{ $reports->lastItem() }}</span> dari <span style="font-weight: 600; color: #1e293b;">{{ $reports->total() }}</span> riwayat
                 </div>
@@ -578,10 +646,23 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             const sidebar = document.getElementById('sidebar');
-            const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            const storedCollapse = localStorage.getItem('sidebarCollapsed');
+            const isCollapsed = storedCollapse === null ? window.innerWidth <= 768 : storedCollapse === 'true';
             if (isCollapsed && sidebar) {
                 sidebar.classList.add('collapsed');
             }
+
+            // Click outside sidebar to close on mobile
+            document.addEventListener('click', function (event) {
+                const sidebar = document.getElementById('sidebar');
+                const toggleBtn = document.querySelector('.sidebar-toggle-btn');
+                if (window.innerWidth <= 768 && sidebar && !sidebar.classList.contains('collapsed')) {
+                    if (!sidebar.contains(event.target) && (!toggleBtn || !toggleBtn.contains(event.target))) {
+                        sidebar.classList.add('collapsed');
+                        localStorage.setItem('sidebarCollapsed', 'true');
+                    }
+                }
+            });
         });
 
         function openEditModal(id, date, amount, type, description) {

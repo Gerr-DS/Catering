@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Management - HafidzManage</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -185,19 +185,32 @@
             padding: 25px;
             border-radius: 16px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+            border: 1px solid #f3f4f6;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
         }
 
         th,
         td {
-            padding: 12px;
+            padding: 14px 16px;
             text-align: left;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #f3f4f6;
+            vertical-align: middle;
+        }
+
+        th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #4b5563;
+            font-size: 0.9rem;
+        }
+
+        td {
+            font-size: 0.95rem;
+            color: #1f2937;
         }
 
         .btn-add {
@@ -214,14 +227,195 @@
             background: var(--primary-dark);
         }
 
-        .status-ready {
-            color: #059669;
-            font-weight: bold;
+        .alert-success {
+            background-color: #d1fae5;
+            color: #065f46;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
         }
 
-        .status-soldout {
-            color: var(--danger);
-            font-weight: bold;
+        /* Status badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-width: 1px;
+            border-style: solid;
+        }
+
+        .status-badge.ready {
+            background-color: #ecfdf5;
+            color: #047857;
+            border-color: #a7f3d0;
+        }
+
+        .status-badge.habis {
+            background-color: #fef2f2;
+            color: #b91c1c;
+            border-color: #fecaca;
+        }
+
+        /* Custom Action buttons similar to stock */
+        .action-btn {
+            border: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+        }
+
+        .action-btn.edit {
+            background-color: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #bfdbfe;
+        }
+
+        .action-btn.edit:hover {
+            background-color: #2563eb;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+        }
+
+        .action-btn.delete {
+            background-color: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .action-btn.delete:hover {
+            background-color: #dc2626;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.2);
+        }
+
+        /* Premium Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 480px;
+            padding: 32px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            position: relative;
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            right: 24px;
+            top: 24px;
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-close-btn:hover {
+            color: var(--text-dark);
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 24px;
+        }
+
+        /* Form styling inside Modals */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #4b5563;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+            background: white;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+        }
+
+        textarea.form-control {
+            height: 80px;
+            resize: none;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            outline: none;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4b5563;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
         }
 
         /* Dynamic Menu Statistics Cards */
@@ -282,6 +476,7 @@
         /* Search input & container */
         .search-container {
             position: relative;
+            width: 280px;
         }
 
         .search-container i {
@@ -382,9 +577,101 @@
             }
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
+            body {
+                position: relative;
+            }
+
+            .sidebar {
+                position: fixed !important;
+                left: 0;
+                top: 0;
+                height: 100vh !important;
+                z-index: 1000 !important;
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                transform: translateX(0);
+                width: 260px !important;
+                padding: 30px 20px !important;
+                border-right: 1px solid var(--border-color) !important;
+                box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+            }
+
+            .sidebar.collapsed {
+                transform: translateX(-100%) !important;
+                width: 260px !important;
+                border-right: none !important;
+                padding: 30px 20px !important;
+            }
+
+            .main-content {
+                width: 100% !important;
+                padding: 15px !important;
+            }
+
+            .sidebar-close-btn {
+                display: block !important;
+            }
+
             .summary-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
+            }
+
+            .card > div:first-child {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 12px !important;
+            }
+
+            .card > div:first-child > div {
+                width: 100% !important;
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 12px !important;
+            }
+
+            .filter-pills {
+                display: flex;
+                width: 100% !important;
+            }
+
+            .filter-pill {
+                flex: 1;
+                text-align: center;
+            }
+
+            .search-container {
+                width: 100% !important;
+            }
+
+            .btn-add {
+                width: 100% !important;
+                justify-content: center;
+            }
+
+            /* Responsive tables styling */
+            .table-responsive {
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                border-radius: 8px;
+                border: 1px solid #cbd5e1;
+                margin-bottom: 15px;
+            }
+
+            .table-responsive table {
+                min-width: 600px;
+            }
+
+            .card {
+                padding: 16px !important;
+            }
+
+            .pagination-container {
+                flex-direction: column !important;
+                gap: 12px !important;
+                align-items: center !important;
+                text-align: center;
             }
         }
     </style>
@@ -392,14 +679,19 @@
 
 <body>
     <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="logo-icon">
-                <i class="fa-solid fa-utensils"></i>
+        <div class="sidebar-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-utensils"></i>
+                </div>
+                <div class="sidebar-header-text">
+                    <h2>Hafidz Catering</h2>
+                    <span>MANAGEMENT PORTAL</span>
+                </div>
             </div>
-            <div class="sidebar-header-text">
-                <h2>Hafidz Catering</h2>
-                <span>MANAGEMENT PORTAL</span>
-            </div>
+            <button class="sidebar-close-btn" onclick="toggleSidebar()" style="display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
         </div>
 
         <ul class="sidebar-menu">
@@ -441,18 +733,18 @@
     </aside>
 
     <main class="main-content">
-        <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 30px;">
+        <div class="header-top" style="display: flex; align-items: center; gap: 20px; margin-bottom: 25px;">
             <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
                 <i class="fa-solid fa-bars"></i>
             </button>
-            <div>
-                <h1 style="font-size: 1.8rem; font-weight: 800; color: #111827; margin: 0;">Menu Management</h1>
-                <p style="font-size: 0.85rem; color: #6b7280; margin-top: 4px;">Atur menu yang tampil di halaman pembeli.</p>
+            <div class="header-title">
+                <h1>Menu Management</h1>
+                <p>Atur menu yang tampil di halaman pembeli.</p>
             </div>
         </div>
 
         @if(session('success')) 
-            <div style="background-color: #d1fae5; color: #065f46; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-weight: 500;">
+            <div class="alert-success">
                 {{ session('success') }}
             </div> 
         @endif
@@ -487,7 +779,7 @@
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid var(--border-color); padding-bottom: 20px; flex-wrap: wrap; gap: 16px;">
                 <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap; flex: 1;">
                     <!-- Search input -->
-                    <div class="search-container" style="width: 280px; margin: 0;">
+                    <div class="search-container" style="margin: 0;">
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <input type="text" id="searchInput" class="search-input" placeholder="Cari nama menu...">
                     </div>
@@ -505,21 +797,22 @@
                 </button>
             </div>
 
-            <table style="width: 100%; table-layout: fixed; border-collapse: collapse;">
+            <div class="table-responsive">
+                <table>
                 <thead>
                     <tr>
-                        <th style="width: 12%; padding: 12px; text-align: left; font-weight: 600; color: #4b5563; font-size: 0.95rem; background-color: #f9fafb; border-bottom: 1px solid #eee;">Foto</th>
-                        <th style="width: 28%; padding: 12px; text-align: left; font-weight: 600; color: #4b5563; font-size: 0.95rem; background-color: #f9fafb; border-bottom: 1px solid #eee;">Nama Menu</th>
-                        <th style="width: 18%; padding: 12px; text-align: left; font-weight: 600; color: #4b5563; font-size: 0.95rem; background-color: #f9fafb; border-bottom: 1px solid #eee;">Harga</th>
-                        <th style="width: 17%; padding: 12px; text-align: left; font-weight: 600; color: #4b5563; font-size: 0.95rem; background-color: #f9fafb; border-bottom: 1px solid #eee;">Status</th>
-                        <th style="width: 25%; padding: 12px; text-align: center; font-weight: 600; color: #4b5563; font-size: 0.95rem; background-color: #f9fafb; border-bottom: 1px solid #eee;">Aksi</th>
+                        <th style="width: 12%;">Foto</th>
+                        <th style="width: 33%;">Nama Menu</th>
+                        <th style="width: 20%;">Harga</th>
+                        <th style="width: 18%;">Status</th>
+                        <th style="width: 17%; text-align: center;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="menuTableBody">
                     @forelse($menus as $menu)
                     <tr class="menu-row" data-name="{{ strtolower($menu->nama_menu) }}" data-status="{{ $menu->status ? 'ready' : 'habis' }}">
                         <!-- Column Foto -->
-                        <td style="padding: 12px; border-bottom: 1px solid #eee; text-align: left; vertical-align: middle;">
+                        <td>
                             <div style="width: 56px; height: 56px; border-radius: 10px; overflow: hidden; background: #f3f4f6; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                                 @if($menu->gambar)
                                     <img src="{{ asset('storage/menus/' . $menu->gambar) }}" alt="{{ $menu->nama_menu }}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -534,71 +827,36 @@
                             </div>
                         </td>
 
-                        <td style="font-weight: 600; color: var(--text-dark); padding: 16px 12px; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border-bottom: 1px solid #eee; vertical-align: middle;">{{ $menu->nama_menu }}</td>
-                        <td style="color: var(--primary); font-weight: 600; padding: 16px 12px; text-align: left; border-bottom: 1px solid #eee; vertical-align: middle;">Rp {{ number_format($menu->harga_menu, 0, ',', '.') }}</td>
-                        <td style="padding: 16px 12px; text-align: left; border-bottom: 1px solid #eee; vertical-align: middle;">
-                            <span class="{{ $menu->status ? 'status-ready' : 'status-soldout' }}" style="
-                                display: inline-block;
-                                padding: 6px 12px;
-                                border-radius: 50px;
-                                font-size: 0.85rem;
-                                font-weight: 600;
-                                background-color: {{ $menu->status ? '#d1fae5' : '#fee2e2' }};
-                                color: {{ $menu->status ? '#065f46' : '#991b1b' }};
-                            ">
+                        <td style="font-weight: 600; color: var(--text-dark); max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ $menu->nama_menu }}</td>
+                        <td style="color: var(--primary); font-weight: 600;">Rp {{ number_format($menu->harga_menu, 0, ',', '.') }}</td>
+                        <td>
+                            <span class="status-badge {{ $menu->status ? 'ready' : 'habis' }}">
+                                <i class="fa-solid {{ $menu->status ? 'fa-circle-check' : 'fa-circle-xmark' }}"></i>
                                 {{ $menu->status ? 'Ready' : 'Habis' }}
                             </span>
                         </td>
-                        <td style="padding: 16px 12px; text-align: center; border-bottom: 1px solid #eee; vertical-align: middle;">
+                        <td>
                             <div style="display: flex; gap: 8px; align-items: center; justify-content: center;">
                                 <button
                                     type="button"
+                                    class="action-btn edit"
+                                    title="Edit Menu"
                                     onclick="openEditModal(
                                         '{{ $menu->id_menu }}',
                                         '{{ addslashes($menu->nama_menu) }}',
                                         '{{ $menu->harga_menu }}',
                                         '{{ $menu->status_menu }}',
                                         '{{ addslashes($menu->deskripsi) }}'
-                                    )"
-                                    style="
-                                        background: #2563eb;
-                                        color: white;
-                                        border: none;
-                                        padding: 8px 16px;
-                                        border-radius: 8px;
-                                        cursor: pointer;
-                                        font-weight: 600;
-                                        font-size: 0.85rem;
-                                        transition: background 0.2s;
-                                        display: inline-flex;
-                                        align-items: center;
-                                        gap: 6px;
-                                    "
-                                    onmouseover="this.style.background='#1d4ed8'"
-                                    onmouseout="this.style.background='#2563eb'">
-                                    <i class="fa-solid fa-pen-to-square"></i> Edit
+                                    )">
+                                    <i class="fa-solid fa-pen-to-square"></i>
                                 </button>
                                 
                                 <button
                                     type="button"
-                                    onclick="openDeleteModal('{{ $menu->id_menu }}', '{{ addslashes($menu->nama_menu) }}')"
-                                    style="
-                                        background: #dc2626;
-                                        color: white;
-                                        border: none;
-                                        padding: 8px 16px;
-                                        border-radius: 8px;
-                                        cursor: pointer;
-                                        font-weight: 600;
-                                        font-size: 0.85rem;
-                                        transition: background 0.2s;
-                                        display: inline-flex;
-                                        align-items: center;
-                                        gap: 6px;
-                                    "
-                                    onmouseover="this.style.background='#991b1b'"
-                                    onmouseout="this.style.background='#dc2626'">
-                                    <i class="fa-solid fa-trash"></i> Hapus
+                                    class="action-btn delete"
+                                    title="Hapus Menu"
+                                    onclick="openDeleteModal('{{ $menu->id_menu }}', '{{ addslashes($menu->nama_menu) }}')">
+                                    <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
                         </td>
@@ -612,9 +870,10 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>
 
             <!-- Client-side Pagination panel -->
-            <div class="pagination-container" id="paginationContainer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid #f3f4f6;">
+            <div class="pagination-container" id="paginationContainer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid #f3f4f6; flex-wrap: wrap; gap: 16px;">
                 <div class="pagination-info" style="font-size: 0.85rem; color: #6b7280;" id="paginationInfo">
                     Menampilkan <span id="startIdx" style="font-weight: 600; color: #111827;">0</span> - <span id="endIdx" style="font-weight: 600; color: #111827;">0</span> dari <span id="totalIdx" style="font-weight: 600; color: #111827;">0</span> menu
                 </div>
@@ -626,375 +885,116 @@
     </main>
 
     <!-- MODAL TAMBAH MENU -->
-    <div id="addModal" style="
-        display:none;
-        position:fixed;
-        top:0;
-        left:0;
-        width:100%;
-        height:100%;
-        background:rgba(0,0,0,0.5);
-        justify-content:center;
-        align-items:center;
-        z-index:9999;
-    ">
-        <div style="
-            background:white;
-            padding:30px;
-            border-radius:16px;
-            width:450px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        ">
-            <h2 style="margin-bottom:20px; font-size: 1.35rem; font-weight: 700; color: var(--text-dark);">
-                + Tambah Menu Baru
-            </h2>
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <button onclick="closeAddModal()" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="modal-title">+ Tambah Menu Baru</h3>
 
             <form action="{{ route('admin.menu.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
-                <div style="margin-bottom:15px;">
-                    <label style="display: block; font-size: 0.85rem; color: #4b5563; margin-bottom: 6px; font-weight: 500;">Nama Menu</label>
-                    <input
-                        type="text"
-                        name="name"
-                        placeholder="Contoh: Nasi Tumpeng Spesial"
-                        required
-                        style="
-                            width:100%;
-                            padding:10px;
-                            border:1px solid #ddd;
-                            border-radius:8px;
-                            outline: none;
-                        ">
+                <div class="form-group">
+                    <label>Nama Menu</label>
+                    <input type="text" name="name" class="form-control" placeholder="Contoh: Nasi Tumpeng Spesial" required>
                 </div>
 
-                <div style="margin-bottom:15px;">
-                    <label style="display: block; font-size: 0.85rem; color: #4b5563; margin-bottom: 6px; font-weight: 500;">Deskripsi Menu</label>
-                    <textarea
-                        name="description"
-                        placeholder="Masukkan penjelasan lezat mengenai menu katering ini..."
-                        rows="3"
-                        style="
-                            width:100%;
-                            padding:10px;
-                            border:1px solid #ddd;
-                            border-radius:8px;
-                            outline: none;
-                            resize: vertical;
-                            font-family: inherit;
-                        "></textarea>
+                <div class="form-group">
+                    <label>Deskripsi Menu</label>
+                    <textarea name="description" class="form-control" placeholder="Masukkan penjelasan lezat mengenai menu katering ini..."></textarea>
                 </div>
 
-                <div style="margin-bottom:15px;">
-                    <label style="display: block; font-size: 0.85rem; color: #4b5563; margin-bottom: 6px; font-weight: 500;">Harga (Rp)</label>
-                    <input
-                        type="number"
-                        name="price"
-                        placeholder="Contoh: 25000"
-                        required
-                        style="
-                            width:100%;
-                            padding:10px;
-                            border:1px solid #ddd;
-                            border-radius:8px;
-                            outline: none;
-                        ">
+                <div class="form-group">
+                    <label>Harga (Rp)</label>
+                    <input type="number" name="price" class="form-control" placeholder="Contoh: 25000" required>
                 </div>
 
-                <div style="margin-bottom:15px;">
-                    <label style="display: block; font-size: 0.85rem; color: #4b5563; margin-bottom: 6px; font-weight: 500;">Status</label>
-                    <select
-                        name="status"
-                        style="
-                            width:100%;
-                            padding:10px;
-                            border:1px solid #ddd;
-                            border-radius:8px;
-                            outline: none;
-                        ">
+                <div class="form-group">
+                    <label>Status</label>
+                    <select name="status" class="form-control">
                         <option value="1">Ready</option>
                         <option value="0">Habis</option>
                     </select>
                 </div>
 
-                <div style="margin-bottom:15px;">
-                    <label style="display: block; font-size: 0.85rem; color: #4b5563; margin-bottom: 6px; font-weight: 500;">Gambar Menu</label>
-                    <input
-                        type="file"
-                        name="image"
-                        accept="image/*"
-                        required
-                        style="
-                            width:100%;
-                            padding:10px;
-                            border:1px solid #ddd;
-                            border-radius:8px;
-                            background-color: #f9fafb;
-                        ">
+                <div class="form-group">
+                    <label>Gambar Menu</label>
+                    <input type="file" name="image" accept="image/*" class="form-control" required style="background-color: #f9fafb;">
                 </div>
 
-                <div style="display:flex; gap:10px; margin-top:25px;">
-                    <button
-                        type="submit"
-                        style="
-                            flex:1;
-                            background:#059669;
-                            color:white;
-                            border:none;
-                            padding:12px;
-                            border-radius:8px;
-                            font-weight: 600;
-                            cursor:pointer;
-                            transition: background 0.2s;
-                        "
-                        onmouseover="this.style.background='#064e3b'"
-                        onmouseout="this.style.background='#059669'">
-                        Simpan Menu
-                    </button>
-
-                    <button
-                        type="button"
-                        onclick="closeAddModal()"
-                        style="
-                            flex:1;
-                            background:#dc2626;
-                            color:white;
-                            border:none;
-                            padding:12px;
-                            border-radius:8px;
-                            font-weight: 600;
-                            cursor:pointer;
-                            transition: background 0.2s;
-                        "
-                        onmouseover="this.style.background='#991b1b'"
-                        onmouseout="this.style.background='#dc2626'">
-                        Batal
-                    </button>
+                <div class="modal-actions">
+                    <button type="button" onclick="closeAddModal()" class="btn btn-secondary">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Menu</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- MODAL EDIT MENU -->
-    <div id="editModal" style="
-        display:none;
-        position:fixed;
-        top:0;
-        left:0;
-        width:100%;
-        height:100%;
-        background:rgba(0,0,0,0.5);
-        justify-content:center;
-        align-items:center;
-        z-index:9999;
-    ">
-        <div style="
-            background:white;
-            padding:30px;
-            border-radius:16px;
-            width:450px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        ">
-            <h2 style="margin-bottom:20px; font-weight: 700; color: var(--text-dark);">
-                Edit Menu
-            </h2>
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <button onclick="closeEditModal()" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="modal-title">Edit Menu</h3>
 
-            <form
-                id="editForm"
-                method="POST"
-                enctype="multipart/form-data">
+            <form id="editForm" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
-                <div style="margin-bottom:15px;">
-                    <label style="display: block; font-size: 0.85rem; color: #4b5563; margin-bottom: 6px; font-weight: 500;">Nama Menu</label>
-                    <input
-                        type="text"
-                        name="name"
-                        id="editName"
-                        required
-                        style="
-                            width:100%;
-                            padding:10px;
-                            border:1px solid #ddd;
-                            border-radius:8px;
-                            outline: none;
-                        ">
+                <div class="form-group">
+                    <label>Nama Menu</label>
+                    <input type="text" name="name" id="editName" class="form-control" required>
                 </div>
 
-                <div style="margin-bottom:15px;">
-                    <label style="display: block; font-size: 0.85rem; color: #4b5563; margin-bottom: 6px; font-weight: 500;">Deskripsi Menu</label>
-                    <textarea
-                        name="description"
-                        id="editDescription"
-                        placeholder="Masukkan penjelasan lezat mengenai menu katering ini..."
-                        rows="3"
-                        style="
-                            width:100%;
-                            padding:10px;
-                            border:1px solid #ddd;
-                            border-radius:8px;
-                            outline: none;
-                            resize: vertical;
-                            font-family: inherit;
-                        "></textarea>
+                <div class="form-group">
+                    <label>Deskripsi Menu</label>
+                    <textarea name="description" id="editDescription" class="form-control" placeholder="Masukkan penjelasan lezat mengenai menu katering ini..."></textarea>
                 </div>
 
-                <div style="margin-bottom:15px;">
-                    <label style="display: block; font-size: 0.85rem; color: #4b5563; margin-bottom: 6px; font-weight: 500;">Harga</label>
-                    <input
-                        type="number"
-                        name="price"
-                        id="editPrice"
-                        required
-                        style="
-                            width:100%;
-                            padding:10px;
-                            border:1px solid #ddd;
-                            border-radius:8px;
-                            outline: none;
-                        ">
+                <div class="form-group">
+                    <label>Harga (Rp)</label>
+                    <input type="number" name="price" id="editPrice" class="form-control" required>
                 </div>
 
-                <div style="margin-bottom:15px;">
-                    <label style="display: block; font-size: 0.85rem; color: #4b5563; margin-bottom: 6px; font-weight: 500;">Status</label>
-                    <select
-                        name="status"
-                        id="editStatus"
-                        style="
-                            width:100%;
-                            padding:10px;
-                            border:1px solid #ddd;
-                            border-radius:8px;
-                            outline: none;
-                        ">
+                <div class="form-group">
+                    <label>Status</label>
+                    <select name="status" id="editStatus" class="form-control">
                         <option value="1">Ready</option>
                         <option value="0">Habis</option>
                     </select>
                 </div>
 
-                <div style="margin-bottom:15px;">
-                    <label style="display: block; font-size: 0.85rem; color: #4b5563; margin-bottom: 6px; font-weight: 500;">Gambar Baru</label>
-                    <input
-                        type="file"
-                        name="image"
-                        accept="image/*"
-                        style="
-                            width:100%;
-                            padding:10px;
-                            border:1px solid #ddd;
-                            border-radius:8px;
-                            outline: none;
-                            background-color: #f9fafb;
-                        ">
+                <div class="form-group">
+                    <label>Gambar Baru</label>
+                    <input type="file" name="image" accept="image/*" class="form-control" style="background-color: #f9fafb;">
                 </div>
 
-                <div style="display:flex; gap:10px; margin-top:25px;">
-                    <button
-                        type="submit"
-                        style="
-                            flex:1;
-                            background:#059669;
-                            color:white;
-                            border:none;
-                            padding:12px;
-                            border-radius:8px;
-                            font-weight: 600;
-                            cursor:pointer;
-                            transition: background 0.2s;
-                        "
-                        onmouseover="this.style.background='#064e3b'"
-                        onmouseout="this.style.background='#059669'">
-                        Simpan
-                    </button>
-
-                    <button
-                        type="button"
-                        onclick="closeEditModal()"
-                        style="
-                            flex:1;
-                            background:#dc2626;
-                            color:white;
-                            border:none;
-                            padding:12px;
-                            border-radius:8px;
-                            font-weight: 600;
-                            cursor:pointer;
-                            transition: background 0.2s;
-                        "
-                        onmouseover="this.style.background='#991b1b'"
-                        onmouseout="this.style.background='#dc2626'">
-                        Batal
-                    </button>
+                <div class="modal-actions">
+                    <button type="button" onclick="closeEditModal()" class="btn btn-secondary">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- MODAL DELETE CONFIRMATION -->
-    <div id="deleteConfirmModal" style="
-        display:none;
-        position:fixed;
-        top:0;
-        left:0;
-        width:100%;
-        height:100%;
-        background:rgba(0,0,0,0.6);
-        justify-content:center;
-        align-items:center;
-        z-index:10000;
-        backdrop-filter: blur(4px);
-        transition: all 0.3s;
-    ">
-        <div style="
-            background:white;
-            padding:30px;
-            border-radius:16px;
-            width:420px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            transform: scale(0.9);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-align: center;
-        " id="deleteModalContent">
+    <div id="deleteConfirmModal" class="modal">
+        <div class="modal-content" style="text-align: center;">
             <div style="color: var(--red); font-size: 3rem; margin-bottom: 15px;">
                 <i class="fa-solid fa-triangle-exclamation"></i>
             </div>
-            <h3 style="font-size: 1.4rem; font-weight: 700; color: #111827; margin-bottom: 12px;">Hapus Menu</h3>
-            <p style="color: #4b5563; font-size: 0.95rem; margin-bottom: 8px; line-height: 1.5;">Apakah Anda yakin ingin menghapus menu ini?</p>
+            <h3 class="modal-title" style="margin-bottom: 12px;">Hapus Menu</h3>
+            <p style="color: #4b5563; font-size: 0.95rem; margin-bottom: 16px; line-height: 1.5;">Apakah Anda yakin ingin menghapus menu ini?</p>
+            
             <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; margin-bottom: 24px;">
                 <span style="display: block; font-size: 0.75rem; color: #6b7280; text-transform: uppercase; font-weight: 600; margin-bottom: 4px;">Nama Menu</span>
                 <strong id="deleteMenuName" style="color: #111827; font-size: 1rem; word-break: break-all;">-</strong>
             </div>
+
             <div style="display: flex; gap: 12px; justify-content: center;">
-                <button type="button" onclick="closeDeleteModal()" style="
-                    flex: 1;
-                    background: #6b7280;
-                    color: white;
-                    border: none;
-                    padding: 12px;
-                    border-radius: 8px;
-                    font-weight: 600;
-                    cursor: pointer;
-                    transition: background 0.2s;
-                " onmouseover="this.style.background='#4b5563'" onmouseout="this.style.background='#6b7280'">
-                    Batal
-                </button>
+                <button type="button" onclick="closeDeleteModal()" class="btn btn-secondary" style="flex: 1;">Batal</button>
                 <form id="deleteForm" method="POST" style="flex: 1; margin: 0;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" style="
-                        width: 100%;
-                        background: var(--red);
-                        color: white;
-                        border: none;
-                        padding: 12px;
-                        border-radius: 8px;
-                        font-weight: 600;
-                        cursor: pointer;
-                        transition: background 0.2s;
-                    " onmouseover="this.style.background='#b91c1c'" onmouseout="this.style.background='#dc2626'">
-                        Hapus
-                    </button>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; background: var(--red);">Hapus</button>
                 </form>
             </div>
         </div>
@@ -1149,10 +1149,23 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Sidebar preference
             const sidebar = document.getElementById('sidebar');
-            const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            const storedCollapse = localStorage.getItem('sidebarCollapsed');
+            const isCollapsed = storedCollapse === null ? window.innerWidth <= 768 : storedCollapse === 'true';
             if (isCollapsed && sidebar) {
                 sidebar.classList.add('collapsed');
             }
+
+            // Click outside sidebar to close on mobile
+            document.addEventListener('click', function (event) {
+                const sidebar = document.getElementById('sidebar');
+                const toggleBtn = document.querySelector('.sidebar-toggle-btn');
+                if (window.innerWidth <= 768 && sidebar && !sidebar.classList.contains('collapsed')) {
+                    if (!sidebar.contains(event.target) && (!toggleBtn || !toggleBtn.contains(event.target))) {
+                        sidebar.classList.add('collapsed');
+                        localStorage.setItem('sidebarCollapsed', 'true');
+                    }
+                }
+            });
 
             // Real-time Search Box trigger
             const searchInput = document.getElementById('searchInput');

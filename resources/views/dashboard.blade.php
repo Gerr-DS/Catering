@@ -37,6 +37,14 @@
             overflow-x: hidden;
         }
 
+        #about-section, #menu-section, #faq-section, #contact-section, #social-section {
+            scroll-margin-top: 100px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+        }
+
         /* Header / Navbar - glassmorphic floating pill navbar */
         .navbar {
             background: var(--glass-bg);
@@ -219,28 +227,71 @@
 
         /* MOBILE STYLES (max-width: 768px) */
         @media (max-width: 768px) {
+            #about-section, #menu-section, #faq-section, #contact-section, #social-section {
+                scroll-margin-top: 80px;
+            }
+
             .navbar {
-                width: 95%;
-                padding: 0.75rem 1.2rem;
-                flex-direction: column;
-                gap: 0.5rem;
-                border-radius: 25px;
-                top: 15px;
+                width: 100% !important;
+                max-width: 100% !important;
+                top: 0 !important;
+                left: 0 !important;
+                transform: none !important;
+                border-radius: 0 !important;
+                padding: 1rem 1.5rem !important;
+                box-sizing: border-box;
+                border-left: none !important;
+                border-right: none !important;
+                border-top: none !important;
+                border-bottom: 1px solid rgba(26, 71, 42, 0.1) !important;
+                background: rgba(255, 255, 255, 0.95) !important;
+                backdrop-filter: blur(12px) !important;
+                -webkit-backdrop-filter: blur(12px) !important;
+                flex-wrap: wrap;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
             }
             
             .navbar h2 {
-                font-size: 1.15rem;
+                font-size: 1.25rem;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                background: none;
+                border: none;
+                font-size: 1.35rem;
+                color: var(--primary);
+                cursor: pointer;
+                padding: 4px;
+                transition: var(--transition);
+                outline: none;
             }
 
             .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
                 gap: 0.2rem;
-                flex-wrap: wrap;
-                justify-content: center;
+                padding-top: 1rem;
+                align-items: center;
+                background: transparent;
+            }
+
+            .nav-links.show {
+                display: flex;
+            }
+
+            .nav-links li {
+                width: 100%;
+                text-align: center;
             }
 
             .nav-links a {
-                font-size: 0.72rem;
-                padding: 0.35rem 0.75rem;
+                display: block;
+                width: 100%;
+                font-size: 0.9rem !important;
+                padding: 0.6rem 0 !important;
+                border-radius: 12px;
             }
 
             .hero {
@@ -892,7 +943,10 @@
 
     <nav class="navbar">
         <h2>Hafidz Catering<span>.</span></h2>
-        <ul class="nav-links">
+        <button id="mobileMenuBtn" class="mobile-menu-btn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <ul class="nav-links" id="navLinks">
             <li><a href="#about-section" class="active">Penjelasan</a></li>
             <li><a href="#menu-section">Menu</a></li>
             <li><a href="#faq-section">FAQ</a></li>
@@ -1091,6 +1145,35 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Mobile Menu Toggle
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navLinksContainer = document.getElementById('navLinks');
+            const mobileMenuIcon = mobileMenuBtn.querySelector('i');
+
+            mobileMenuBtn.addEventListener('click', function () {
+                navLinksContainer.classList.toggle('show');
+                
+                // Toggle icon between Hamburger (bars) and Close (xmark)
+                if (navLinksContainer.classList.contains('show')) {
+                    mobileMenuIcon.classList.remove('fa-bars');
+                    mobileMenuIcon.classList.add('fa-xmark');
+                } else {
+                    mobileMenuIcon.classList.remove('fa-xmark');
+                    mobileMenuIcon.classList.add('fa-bars');
+                }
+            });
+
+            // Close mobile menu when clicking a link
+            const navLinksItems = navLinksContainer.querySelectorAll('a');
+            navLinksItems.forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinksContainer.classList.remove('remove'); // safety remove
+                    navLinksContainer.classList.remove('show');
+                    mobileMenuIcon.classList.remove('fa-xmark');
+                    mobileMenuIcon.classList.add('fa-bars');
+                });
+            });
+
             const section = document.getElementById('about-section');
 
             function checkVisibility() {

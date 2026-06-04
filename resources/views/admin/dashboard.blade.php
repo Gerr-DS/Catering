@@ -55,6 +55,40 @@
             display: flex;
             flex-direction: column;
             padding: 30px 20px;
+            height: 100vh;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 100;
+            flex-shrink: 0;
+        }
+
+        .sidebar.collapsed {
+            width: 0;
+            padding: 30px 0;
+            overflow: hidden;
+            border-right: none;
+        }
+
+        /* Toggle Button */
+        .sidebar-toggle-btn {
+            background: white;
+            border: 1px solid var(--border-color);
+            color: var(--text-dark);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            flex-shrink: 0;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background: #f9fafb;
+            border-color: #cbd5e1;
         }
 
         .sidebar-header {
@@ -198,7 +232,7 @@
 
         .financial-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr;
+            grid-template-columns: 1.2fr 2fr;
             gap: 24px;
             margin-bottom: 30px;
         }
@@ -402,10 +436,131 @@
             opacity: 0.9;
         }
 
-        @media (max-width: 900px) {
-            .financial-grid,
+
+
+        @media (max-width: 768px) {
+            body {
+                position: relative;
+            }
+
+            .sidebar {
+                position: fixed !important;
+                left: 0;
+                top: 0;
+                height: 100vh !important;
+                z-index: 1000 !important;
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                transform: translateX(0);
+                width: 260px !important;
+                padding: 30px 20px !important;
+                border-right: 1px solid var(--border-color) !important;
+                box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+            }
+
+            .sidebar.collapsed {
+                transform: translateX(-100%) !important;
+                width: 260px !important;
+                border-right: none !important;
+                padding: 30px 20px !important;
+            }
+
+            .main-wrapper,
+            .main-content {
+                width: 100% !important;
+                padding: 15px !important;
+            }
+
+            .top-header {
+                padding: 15px 15px 5px !important;
+            }
+
+            .sidebar-close-btn {
+                display: block !important;
+            }
+
+            .financial-grid {
+                grid-template-columns: 1.15fr 1.5fr !important;
+                gap: 12px !important;
+                margin-bottom: 20px !important;
+            }
+
+            .financial-grid .card,
+            .financial-grid .stat-box {
+                padding: 12px !important;
+            }
+
+            .financial-grid .income-card .amount {
+                font-size: 1.6rem !important;
+            }
+
+            .financial-grid .stat-box .amount {
+                font-size: 1.15rem !important;
+            }
+
+            .financial-grid .side-stats {
+                gap: 12px !important;
+            }
+
+            .financial-grid .income-card h3 {
+                margin-bottom: 8px !important;
+                font-size: 0.85rem !important;
+            }
+
+            .financial-grid .stat-box h3 {
+                margin-bottom: 6px !important;
+                font-size: 0.8rem !important;
+            }
+
             .form-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 12px !important;
+            }
+
+            .form-card {
+                padding: 12px !important;
+                border-radius: 12px !important;
+            }
+
+            .form-card h3 {
+                margin-bottom: 12px !important;
+                font-size: 0.85rem !important;
+                text-align: center;
+            }
+
+            .form-icon {
+                width: 44px !important;
+                height: 44px !important;
+                margin-bottom: 10px !important;
+            }
+
+            .form-icon i {
+                font-size: 1.5rem !important;
+            }
+
+            .form-card p {
+                font-size: 0.72rem !important;
+                margin-bottom: 12px !important;
+                line-height: 1.3;
+            }
+
+            .input-group {
+                margin-bottom: 10px !important;
+            }
+
+            .input-group input {
+                padding: 8px 10px !important;
+                font-size: 0.8rem !important;
+                border-radius: 8px !important;
+            }
+
+            .btn-pengeluaran,
+            .btn-pemasukkan {
+                padding: 8px 6px !important;
+                font-size: 0.75rem !important;
+                border-radius: 8px !important;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
     </style>
@@ -413,17 +568,22 @@
 
 <body>
 
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
 
-        <div class="sidebar-header">
-            <div class="logo-icon">
-                <i class="fa-solid fa-utensils"></i>
-            </div>
+        <div class="sidebar-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-utensils"></i>
+                </div>
 
-            <div class="sidebar-header-text">
-                <h2>Hafidz Catering</h2>
-                <span>MANAGEMENT PORTAL</span>
+                <div class="sidebar-header-text">
+                    <h2>Hafidz Catering</h2>
+                    <span>MANAGEMENT PORTAL</span>
+                </div>
             </div>
+            <button class="sidebar-close-btn" onclick="toggleSidebar()" style="display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
         </div>
 
         <ul class="sidebar-menu">
@@ -471,7 +631,10 @@
 
     <div class="main-wrapper">
 
-        <div class="top-header">
+        <div class="top-header" style="display: flex; align-items: center; gap: 20px;">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
             <div class="header-title">
                 <h1>Financial Overview</h1>
                 <p>Ringkasan kinerja operasional Hafidz Catering harian.</p>
@@ -487,14 +650,6 @@
             @endif
 
             <div class="financial-grid">
-
-                <div class="card income-card">
-                    <h3>Income (Pendapatan Bersih)</h3>
-
-                    <div class="amount" id="incomeAmount">
-                        Rp. {{ number_format($income ?? 0, 0, ',', '.') }}
-                    </div>
-                </div>
 
                 <div class="side-stats">
 
@@ -515,6 +670,15 @@
                     </div>
 
                 </div>
+
+                <div class="card income-card">
+                    <h3>Income (Pendapatan Bersih)</h3>
+
+                    <div class="amount" id="incomeAmount">
+                        Rp. {{ number_format($income ?? 0, 0, ',', '.') }}
+                    </div>
+                </div>
+
             </div>
 
             <div class="chart-container">
@@ -553,38 +717,6 @@
 
                 <div class="form-card">
 
-                    <h3>Catat Pengeluaran</h3>
-
-                    <div class="form-icon red">
-                        <i class="fa-solid fa-money-bill-transfer"></i>
-                    </div>
-
-                    <p>Masukkan data pengeluaran anda disini</p>
-
-                    <form action="{{ route('admin.financial.store') }}" method="POST">
-                        @csrf
-
-                        <input type="hidden" name="type" value="pengeluaran">
-
-                        <div class="input-group">
-                            <input type="number" name="amount"
-                                placeholder="Nominal" required>
-                        </div>
-
-                        <div class="input-group">
-                            <input type="text" name="description"
-                                placeholder="Keterangan" required>
-                        </div>
-
-                        <button type="submit" class="btn-pengeluaran">
-                            + Tambah Pengeluaran
-                        </button>
-                    </form>
-
-                </div>
-
-                <div class="form-card">
-
                     <h3>Catat Pemasukkan</h3>
 
                     <div class="form-icon green">
@@ -610,6 +742,38 @@
 
                         <button type="submit" class="btn-pemasukkan">
                             + Tambah Pemasukkan
+                        </button>
+                    </form>
+
+                </div>
+
+                <div class="form-card">
+
+                    <h3>Catat Pengeluaran</h3>
+
+                    <div class="form-icon red">
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+                    </div>
+
+                    <p>Masukkan data pengeluaran anda disini</p>
+
+                    <form action="{{ route('admin.financial.store') }}" method="POST">
+                        @csrf
+
+                        <input type="hidden" name="type" value="pengeluaran">
+
+                        <div class="input-group">
+                            <input type="number" name="amount"
+                                placeholder="Nominal" required>
+                        </div>
+
+                        <div class="input-group">
+                            <input type="text" name="description"
+                                placeholder="Keterangan" required>
+                        </div>
+
+                        <button type="submit" class="btn-pengeluaran">
+                            + Tambah Pengeluaran
                         </button>
                     </form>
 
@@ -964,6 +1128,33 @@
             initChart('1M');
             updateChangeIndicator('1M');
             updateCardTotals('1M');
+        });
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('collapsed');
+            localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const storedCollapse = localStorage.getItem('sidebarCollapsed');
+            const isCollapsed = storedCollapse === null ? window.innerWidth <= 768 : storedCollapse === 'true';
+            if (isCollapsed && sidebar) {
+                sidebar.classList.add('collapsed');
+            }
+
+            // Click outside sidebar to close on mobile
+            document.addEventListener('click', function (event) {
+                const sidebar = document.getElementById('sidebar');
+                const toggleBtn = document.querySelector('.sidebar-toggle-btn');
+                if (window.innerWidth <= 768 && sidebar && !sidebar.classList.contains('collapsed')) {
+                    if (!sidebar.contains(event.target) && (!toggleBtn || !toggleBtn.contains(event.target))) {
+                        sidebar.classList.add('collapsed');
+                        localStorage.setItem('sidebarCollapsed', 'true');
+                    }
+                }
+            });
         });
     </script>
 </body>

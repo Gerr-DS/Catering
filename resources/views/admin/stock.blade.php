@@ -234,6 +234,47 @@
             color: #111827;
         }
 
+        .table-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            flex: 1;
+            justify-content: flex-end;
+        }
+
+        .search-wrapper {
+            width: 280px;
+        }
+
+        .btn-add-mobile {
+            display: none;
+            background: var(--primary);
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-add-mobile:hover {
+            background: var(--primary-dark);
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -546,14 +587,121 @@
 
         @media (max-width: 1200px) {
             .summary-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto auto;
+                grid-auto-flow: column;
                 gap: 16px;
             }
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
+            body {
+                position: relative;
+            }
+
+            .sidebar {
+                position: fixed !important;
+                left: 0;
+                top: 0;
+                height: 100vh !important;
+                z-index: 1000 !important;
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                transform: translateX(0);
+                width: 260px !important;
+                padding: 30px 20px !important;
+                border-right: 1px solid var(--border-color) !important;
+                box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+            }
+
+            .sidebar.collapsed {
+                transform: translateX(-100%) !important;
+                width: 260px !important;
+                border-right: none !important;
+                padding: 30px 20px !important;
+            }
+
+            .main-content {
+                width: 100% !important;
+                padding: 15px !important;
+            }
+
+            .sidebar-close-btn {
+                display: block !important;
+            }
+
+            .stock-layout {
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
+            }
+
             .summary-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr !important;
+                grid-template-rows: auto auto !important;
+                grid-auto-flow: column !important;
+                gap: 12px !important;
+            }
+
+            .summary-card {
+                padding: 12px 14px !important;
+                gap: 12px !important;
+                border-radius: 12px !important;
+            }
+
+            .summary-icon {
+                width: 40px !important;
+                height: 40px !important;
+                font-size: 1.05rem !important;
+                border-radius: 10px !important;
+            }
+
+            .summary-info h4 {
+                font-size: 0.72rem !important;
+                margin-bottom: 2px !important;
+            }
+
+            .summary-info .value {
+                font-size: 1.3rem !important;
+            }
+
+            .table-card-header {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 12px !important;
+            }
+
+            .header-actions {
+                width: 100% !important;
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 12px !important;
+            }
+
+            .btn-add-mobile {
+                display: flex !important;
+                width: 100% !important;
+                justify-content: center !important;
+            }
+
+            .search-wrapper {
+                width: 100% !important;
+            }
+
+            .form-card {
+                display: none !important;
+            }
+
+            /* Responsive tables styling */
+            .table-responsive {
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                border-radius: 8px;
+                border: 1px solid #cbd5e1;
+                margin-bottom: 15px;
+            }
+
+            .table-responsive table {
+                min-width: 600px;
             }
         }
     </style>
@@ -562,14 +710,19 @@
 <body>
 
     <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="logo-icon">
-                <i class="fa-solid fa-utensils"></i>
+        <div class="sidebar-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-utensils"></i>
+                </div>
+                <div class="sidebar-header-text">
+                    <h2>Hafidz Catering</h2>
+                    <span>MANAGEMENT PORTAL</span>
+                </div>
             </div>
-            <div class="sidebar-header-text">
-                <h2>Hafidz Catering</h2>
-                <span>MANAGEMENT PORTAL</span>
-            </div>
+            <button class="sidebar-close-btn" onclick="toggleSidebar()" style="display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
         </div>
 
         <ul class="sidebar-menu">
@@ -629,20 +782,6 @@
 
         <!-- Dynamic Stock Summary Cards -->
         <div class="summary-grid">
-            <div class="summary-card theme-total">
-                <div class="summary-icon"><i class="fa-solid fa-box"></i></div>
-                <div class="summary-info">
-                    <h4>Total Bahan</h4>
-                    <div class="value">{{ $stocks->count() }}</div>
-                </div>
-            </div>
-            <div class="summary-card theme-aman">
-                <div class="summary-icon"><i class="fa-solid fa-circle-check"></i></div>
-                <div class="summary-info">
-                    <h4>Stok Aman</h4>
-                    <div class="value">{{ $stocks->where('jumlah_stok', '>', 10)->count() }}</div>
-                </div>
-            </div>
             <div class="summary-card theme-menipis">
                 <div class="summary-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
                 <div class="summary-info">
@@ -657,21 +796,45 @@
                     <div class="value">{{ $stocks->where('jumlah_stok', 0)->count() }}</div>
                 </div>
             </div>
+            <div class="summary-card theme-total">
+                <div class="summary-icon"><i class="fa-solid fa-box"></i></div>
+                <div class="summary-info">
+                    <h4>Total Bahan</h4>
+                    <div class="value">{{ $stocks->count() }}</div>
+                </div>
+            </div>
+            <div class="summary-card theme-aman">
+                <div class="summary-icon"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="summary-info">
+                    <h4>Stok Aman</h4>
+                    <div class="value">{{ $stocks->where('jumlah_stok', '>', 10)->count() }}</div>
+                </div>
+            </div>
         </div>
 
         <div class="stock-layout">
             <div class="table-card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 16px;">
+                <div class="table-card-header">
                     <h3 style="margin: 0; font-size: 1.15rem; font-weight: 700; color: #111827;">Daftar Bahan Tersedia</h3>
-                    <div style="width: 280px; margin: 0;">
-                        <div class="search-container">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="text" id="searchInput" class="search-input" placeholder="Cari bahan baku...">
+                    
+                    <div class="header-actions">
+                        <!-- Add Button (Mobile Only) -->
+                        <button onclick="openAddModal()" class="btn-add-mobile">
+                            <i class="fa-solid fa-plus"></i> Tambah Bahan Baru
+                        </button>
+                        
+                        <!-- Search container -->
+                        <div class="search-wrapper">
+                            <div class="search-container">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="searchInput" class="search-input" placeholder="Cari bahan baku...">
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <table>
+                <div class="table-responsive">
+                    <table>
                     <thead>
                         <tr>
                             <th>No</th>
@@ -734,6 +897,7 @@
                         @endforelse
                     </tbody>
                 </table>
+                </div>
             </div>
 
             <div class="form-card">
@@ -774,27 +938,143 @@
         </div>
 
     </main>
+    <!-- MODAL TAMBAH STOK -->
+    <div id="addModal" style="
+        display:none;
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background:rgba(0,0,0,0.5);
+        justify-content:center;
+        align-items:center;
+        z-index: 1000;
+        backdrop-filter: blur(4px);
+        padding: 20px;
+        box-sizing: border-box;
+    ">
+        <div style="
+            background:white;
+            padding:30px;
+            border-radius:16px;
+            width:100%;
+            max-width:400px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            position: relative;
+            box-sizing: border-box;
+        ">
+            <!-- Modal Close X Button -->
+            <button onclick="closeAddModal()" style="
+                position: absolute;
+                right: 20px;
+                top: 20px;
+                background: none;
+                border: none;
+                font-size: 1.25rem;
+                color: var(--text-muted);
+                cursor: pointer;
+            ">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h2 style="margin-bottom:20px; font-weight: 700; color: #111827;">+ Tambah Bahan Baru</h2>
+
+            <form action="{{ route('admin.stock.store') }}" method="POST">
+                @csrf
+
+                <div class="input-group">
+                    <label>Nama Bahan Baku</label>
+                    <input type="text" name="name" placeholder="Contoh: Beras Putih, Daging Ayam" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Jumlah</label>
+                    <input type="number" name="quantity" placeholder="Contoh: 50" required min="0">
+                </div>
+
+                <div class="input-group">
+                    <label>Satuan Ukur</label>
+                    <select name="unit" required>
+                        <option value="Kg">Kilogram (Kg)</option>
+                        <option value="gr">Gram (gr)</option>
+                        <option value="L">Liter (L)</option>
+                        <option value="ml">Mililiter (ml)</option>
+                        <option value="Butir">Butir</option>
+                        <option value="Pcs">Buah / Pcs</option>
+                        <option value="Pack">Pack</option>
+                        <option value="Dus">Dus</option>
+                        <option value="Botol">Botol</option>
+                        <option value="Kaleng">Kaleng</option>
+                        <option value="Ikat">Ikat</option>
+                        <option value="Sachet">Sachet</option>
+                    </select>
+                </div>
+
+                <div style="display:flex; gap:10px; margin-top:24px;">
+                    <button type="submit" class="btn-submit" style="flex: 1;">
+                        Simpan
+                    </button>
+                    <button type="button" onclick="closeAddModal()" style="
+                        flex: 1;
+                        background:#dc2626;
+                        color:white;
+                        border:none;
+                        padding:12px;
+                        border-radius:8px;
+                        font-weight: bold;
+                        cursor:pointer;
+                        transition: background 0.2s;
+                    "
+                    onmouseover="this.style.background='#b91c1c'"
+                    onmouseout="this.style.background='#dc2626'">
+                        Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- MODAL EDIT -->
     <div id="editModal" style="
-    display:none;
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.5);
-    justify-content:center;
-    align-items:center;
-    z-index: 1000;
-">
+        display:none;
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background:rgba(0,0,0,0.5);
+        justify-content:center;
+        align-items:center;
+        z-index: 1000;
+        backdrop-filter: blur(4px);
+        padding: 20px;
+        box-sizing: border-box;
+    ">
 
         <div style="
-        background:white;
-        padding:30px;
-        border-radius:16px;
-        width:400px;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    ">
+            background:white;
+            padding:30px;
+            border-radius:16px;
+            width:100%;
+            max-width:400px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            position: relative;
+            box-sizing: border-box;
+        ">
+            <!-- Modal Close X Button -->
+            <button onclick="closeEditModal()" type="button" style="
+                position: absolute;
+                right: 20px;
+                top: 20px;
+                background: none;
+                border: none;
+                font-size: 1.25rem;
+                color: var(--text-muted);
+                cursor: pointer;
+            ">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
 
             <h2 style="margin-bottom:20px; font-weight: 700; color: #111827;">Edit Stock</h2>
 
@@ -859,6 +1139,14 @@
     </div>
 
     <script>
+        function openAddModal() {
+            document.getElementById('addModal').style.display = 'flex';
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').style.display = 'none';
+        }
+
         function openEditModal(id, name, quantity, unit) {
             document.getElementById('editModal').style.display = 'flex';
 
@@ -916,10 +1204,23 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Sidebar collapse preference
             const sidebar = document.getElementById('sidebar');
-            const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            const storedCollapse = localStorage.getItem('sidebarCollapsed');
+            const isCollapsed = storedCollapse === null ? window.innerWidth <= 768 : storedCollapse === 'true';
             if (isCollapsed && sidebar) {
                 sidebar.classList.add('collapsed');
             }
+
+            // Click outside sidebar to close on mobile
+            document.addEventListener('click', function (event) {
+                const sidebar = document.getElementById('sidebar');
+                const toggleBtn = document.querySelector('.sidebar-toggle-btn');
+                if (window.innerWidth <= 768 && sidebar && !sidebar.classList.contains('collapsed')) {
+                    if (!sidebar.contains(event.target) && (!toggleBtn || !toggleBtn.contains(event.target))) {
+                        sidebar.classList.add('collapsed');
+                        localStorage.setItem('sidebarCollapsed', 'true');
+                    }
+                }
+            });
 
             // Real-time client-side search filtering
             const searchInput = document.getElementById('searchInput');
