@@ -620,9 +620,10 @@
                 padding: 30px 20px !important;
             }
 
-            .main-content {
+             .main-content {
                 width: 100% !important;
-                padding: 15px !important;
+                padding: 12px !important;
+                overflow-x: hidden !important;
             }
 
             .sidebar-close-btn {
@@ -635,32 +636,37 @@
             }
 
             .summary-grid {
-                grid-template-columns: 1fr 1fr !important;
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
                 grid-template-rows: auto auto !important;
                 grid-auto-flow: column !important;
-                gap: 12px !important;
+                gap: 8px !important;
+                margin-bottom: 16px !important;
             }
 
             .summary-card {
-                padding: 12px 14px !important;
-                gap: 12px !important;
-                border-radius: 12px !important;
-            }
-
-            .summary-icon {
-                width: 40px !important;
-                height: 40px !important;
-                font-size: 1.05rem !important;
+                padding: 10px 8px !important;
+                gap: 8px !important;
                 border-radius: 10px !important;
             }
 
+            .summary-icon {
+                width: 32px !important;
+                height: 32px !important;
+                font-size: 0.95rem !important;
+                border-radius: 8px !important;
+            }
+
             .summary-info h4 {
-                font-size: 0.72rem !important;
+                font-size: 0.65rem !important;
                 margin-bottom: 2px !important;
             }
 
             .summary-info .value {
-                font-size: 1.3rem !important;
+                font-size: 1.15rem !important;
+            }
+
+            .table-card {
+                padding: 12px !important;
             }
 
             .table-card-header {
