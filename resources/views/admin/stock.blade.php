@@ -667,6 +667,7 @@
 
             .table-card {
                 padding: 12px !important;
+                min-width: 0 !important;
             }
 
             .table-card-header {
