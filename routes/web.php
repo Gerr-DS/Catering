@@ -116,3 +116,30 @@ Route::get('/test-email', function () {
         return "Gagal mengirim email persetujuan uji coba. Eror lengkap: " . $e->getMessage();
     }
 });
+
+Route::get('/show-pending', function () {
+    $pending = \App\Models\PendingAdmin::all();
+    if ($pending->isEmpty()) {
+        return "Tidak ada pendaftaran admin yang sedang menunggu persetujuan (tabel pending_admins kosong).";
+    }
+    
+    $html = "<h1>Daftar Permintaan Persetujuan Admin Baru</h1>";
+    $html .= "<table border='1' cellpadding='10' style='border-collapse: collapse; font-family: sans-serif;'>";
+    $html .= "<thead><tr style='background-color: #f3f4f6;'><th>Nama</th><th>Email</th><th>Tanggal Pengajuan</th><th>Aksi Langsung</th></tr></thead>";
+    $html .= "<tbody>";
+    foreach ($pending as $p) {
+        $approveUrl = url('/admin/approve/' . $p->token);
+        $rejectUrl = url('/admin/reject/' . $p->token);
+        $html .= "<tr>";
+        $html .= "<td>{$p->nama}</td>";
+        $html .= "<td>{$p->username}</td>";
+        $html .= "<td>{$p->created_at}</td>";
+        $html .= "<td>";
+        $html .= "<a href='{$approveUrl}' style='color: green; font-weight: bold; margin-right: 15px; text-decoration: none;'>[ Setuju ]</a>";
+        $html .= "<a href='{$rejectUrl}' style='color: red; font-weight: bold; text-decoration: none;'>[ Tolak ]</a>";
+        $html .= "</td>";
+        $html .= "</tr>";
+    }
+    $html .= "</tbody></table>";
+    return $html;
+});
