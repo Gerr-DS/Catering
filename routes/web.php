@@ -156,3 +156,14 @@ Route::get('/show-logs', function () {
     
     return "<h1>Laravel Logs (Last 150 lines)</h1><pre style='background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: monospace;'>" . htmlspecialchars(implode("\n", $lastLines)) . "</pre>";
 });
+
+Route::get('/mail-config', function() {
+    return response()->json([
+        'default_mailer' => config('mail.default'),
+        'from_address' => config('mail.from.address'),
+        'smtp_host' => config('mail.mailers.smtp.host'),
+        'smtp_port' => config('mail.mailers.smtp.port'),
+        'smtp_scheme' => config('mail.mailers.smtp.scheme'),
+        'smtp_username' => config('mail.mailers.smtp.username') ? 'Dikonfigurasi (Sudah Diisi)' : 'Belum Diisi',
+    ]);
+});
