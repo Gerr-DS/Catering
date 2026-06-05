@@ -36,6 +36,12 @@
     <div class="card">
         <h2>Sign Up</h2>
 
+        @if (session('status'))
+            <div style="background-color: #d1fae5; color: #065f46; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 0.875rem; border: 1px solid #34d399; font-weight: 500; line-height: 1.5;">
+                {{ session('status') }}
+            </div>
+        @endif
+
         @if ($errors->any())
             <div class="error-list">
                 <ul style="margin: 0; padding-left: 20px;">
@@ -55,8 +61,8 @@
             </div>
 
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
+                <label for="username">Email</label>
+                <input type="email" id="username" name="username" placeholder="contoh@domain.com" required>
             </div>
 
             <div class="form-group">

@@ -295,7 +295,7 @@
 
             <div class="section-title">
                 <h2>Sign In</h2>
-                <p>Selamat datang kembali! Silakan masukkan username dan kata sandi Anda.</p>
+                <p>Selamat datang kembali! Silakan masukkan email dan kata sandi Anda.</p>
             </div>
 
             <form method="POST" action="{{ route('login') }}">
@@ -308,12 +308,12 @@
                 @endif
 
                 <div class="form-group">
-                    <label for="username">Username</label>
+                    <label for="username">Email</label>
                     <div class="input-wrapper">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
-                        <input class="form-input" id="username" type="text" name="username" required autofocus autocomplete="username" placeholder="Masukkan username Anda">
+                        <input class="form-input" id="username" type="email" name="username" required autofocus autocomplete="username" placeholder="Masukkan email Anda">
                     </div>
                 </div>
 

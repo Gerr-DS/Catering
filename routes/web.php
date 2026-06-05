@@ -46,6 +46,10 @@ Route::post('/logout', function (\Illuminate\Http\Request $request) {
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store']);
 
+// Rute Persetujuan Admin Baru via Email
+Route::get('/admin/approve/{token}', [RegisteredUserController::class, 'approve'])->name('admin.approve');
+Route::get('/admin/reject/{token}', [RegisteredUserController::class, 'reject'])->name('admin.reject');
+
 // 5. Rute Dashboard Admin & Keuangan (Wajib Login)
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
