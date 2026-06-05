@@ -78,3 +78,31 @@ Route::middleware(['auth'])->group(function () {
         ->name('admin.reports.pdf');
     Route::get('/admin/reports', [App\Http\Controllers\AdminDashboardController::class, 'reports'])->name('admin.reports');
 });
+
+// Rute Diagnostik Email & Cache
+Route::get('/clear-cache', function() {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('config:clear');
+        \Illuminate\Support\Facades\Artisan::call('cache:clear');
+        \Illuminate\Support\Facades\Artisan::call('route:clear');
+        \Illuminate\Support\Facades\Artisan::call('view:clear');
+        return "Semua cache Laravel berhasil dibersihkan! Silakan coba kembali.";
+    } catch (\Exception $e) {
+        return "Gagal membersihkan cache. Error: " . $e->getMessage();
+    }
+});
+
+Route::get('/test-email', function () {
+    try {
+        $mockNama = 'Admin Uji Coba';
+        $mockEmail = 'test.admin@hafidzcatering.com';
+        $mockToken = 'test-token-123456';
+        
+        \Illuminate\Support\Facades\Mail::to('gerry.dimasarya2006@gmail.com')
+            ->send(new \App\Mail\AdminApprovalRequest($mockNama, $mockEmail, $mockToken));
+            
+        return "Email uji coba persetujuan berhasil terkirim! Silakan cek kotak masuk atau folder spam di gerry.dimasarya2006@gmail.com.";
+    } catch (\Exception $e) {
+        return "Gagal mengirim email persetujuan uji coba. Eror lengkap: " . $e->getMessage();
+    }
+});
