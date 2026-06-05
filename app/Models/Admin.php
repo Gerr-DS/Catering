@@ -27,7 +27,7 @@ class Admin extends Authenticatable
     protected function casts(): array
     {
         return [
-            'password' => 'hashed',
+            // Removed automatic hashing cast to prevent double hashing when moving password hashes
         ];
     }
 

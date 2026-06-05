@@ -26,7 +26,7 @@ class PendingAdmin extends Model
     protected function casts(): array
     {
         return [
-            'password' => 'hashed',
+            // Removed automatic hashing cast to prevent double hashing
         ];
     }
 }
