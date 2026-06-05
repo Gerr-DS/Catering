@@ -13,7 +13,10 @@ class AdminDashboardController extends Controller
         $totalPengeluaran = TransaksiKeuangan::where('jenis_transaksi', 2)->sum('nominal');
         $income = $totalPemasukkan - $totalPengeluaran;
 
-        return view('admin.dashboard', compact('totalPemasukkan', 'totalPengeluaran', 'income'));
+        // Ambil semua data transaksi untuk di-render secara dinamis di chart
+        $transactions = TransaksiKeuangan::orderBy('tanggal', 'asc')->orderBy('created_at', 'asc')->get();
+
+        return view('admin.dashboard', compact('totalPemasukkan', 'totalPengeluaran', 'income', 'transactions'));
     }
 
     public function store(Request $request)

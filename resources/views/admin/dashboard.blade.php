@@ -838,92 +838,329 @@
 
             let myFinanceChart;
 
-            const dataPemasukkan = {{ $totalPemasukkan ?? 0 }};
-            const dataPengeluaran = {{ $totalPengeluaran ?? 0 }};
-            const dataIncome = {{ $income ?? 0 }};
+            // Ambil data transaksi mentah dari database via JSON
+            const rawTransactions = @json($transactions);
 
-            // Structure to hold period data and dynamic metrics totals for responsiveness
-            const chartPeriodData = {
-                '1D': {
-                    labels: ['09:00', '11:00', '13:00', '15:00', '17:00'],
-                    pemasukkan: [Math.round(dataPemasukkan * 0.2), Math.round(dataPemasukkan * 0.5), Math.round(dataPemasukkan * 0.7), Math.round(dataPemasukkan * 0.9), dataPemasukkan],
-                    pengeluaran: [Math.round(dataPengeluaran * 0.1), Math.round(dataPengeluaran * 0.4), Math.round(dataPengeluaran * 0.6), Math.round(dataPengeluaran * 0.8), dataPengeluaran],
-                    income: [Math.round(dataIncome * 0.3), Math.round(dataIncome * 0.6), Math.round(dataIncome * 0.8), Math.round(dataIncome * 0.9), dataIncome],
-                    totals: {
-                        pemasukkan: Math.round(dataPemasukkan * 0.25),
-                        pengeluaran: Math.round(dataPengeluaran * 0.15),
-                        income: Math.round(dataIncome * 0.35)
-                    }
-                },
-                '7D': {
-                    labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-                    pemasukkan: [Math.round(dataPemasukkan * 0.4), Math.round(dataPemasukkan * 0.6), Math.round(dataPemasukkan * 0.55), Math.round(dataPemasukkan * 0.8), Math.round(dataPemasukkan * 0.9), Math.round(dataPemasukkan * 0.95), dataPemasukkan],
-                    pengeluaran: [Math.round(dataPengeluaran * 0.3), Math.round(dataPengeluaran * 0.5), Math.round(dataPengeluaran * 0.7), Math.round(dataPengeluaran * 0.65), Math.round(dataPengeluaran * 0.85), Math.round(dataPengeluaran * 0.9), dataPengeluaran],
-                    income: [Math.round(dataIncome * 0.5), Math.round(dataIncome * 0.7), Math.round(dataIncome * 0.4), Math.round(dataIncome * 0.95), Math.round(dataIncome * 0.92), Math.round(dataIncome * 1.05), dataIncome],
-                    totals: {
-                        pemasukkan: Math.round(dataPemasukkan * 0.65),
-                        pengeluaran: Math.round(dataPengeluaran * 0.55),
-                        income: Math.round(dataIncome * 0.75)
-                    }
-                },
-                '1M': {
-                    labels: ['Minggu 1', 'Minggu 2', 'Minggu 3', 'Minggu 4'],
-                    pemasukkan: [Math.round(dataPemasukkan * 0.6), Math.round(dataPemasukkan * 0.75), Math.round(dataPemasukkan * 0.9), dataPemasukkan],
-                    pengeluaran: [Math.round(dataPengeluaran * 0.5), Math.round(dataPengeluaran * 0.7), Math.round(dataPengeluaran * 0.85), dataPengeluaran],
-                    income: [Math.round(dataIncome * 0.7), Math.round(dataIncome * 0.8), Math.round(dataIncome * 0.95), dataIncome],
-                    totals: {
-                        pemasukkan: dataPemasukkan,
-                        pengeluaran: dataPengeluaran,
-                        income: dataIncome
-                    }
-                },
-                '3M': {
-                    labels: ['Maret', 'April', 'Mei'],
-                    pemasukkan: [Math.round(dataPemasukkan * 0.75), Math.round(dataPemasukkan * 0.9), dataPemasukkan],
-                    pengeluaran: [Math.round(dataPengeluaran * 0.8), Math.round(dataPengeluaran * 0.85), dataPengeluaran],
-                    income: [Math.round(dataIncome * 0.7), Math.round(dataIncome * 0.95), dataIncome],
-                    totals: {
-                        pemasukkan: Math.round(dataPemasukkan * 2.8),
-                        pengeluaran: Math.round(dataPengeluaran * 2.5),
-                        income: Math.round(dataIncome * 3.2)
-                    }
-                },
-                '6M': {
-                    labels: ['Des', 'Jan', 'Feb', 'Mar', 'Apr', 'Mei'],
-                    pemasukkan: [Math.round(dataPemasukkan * 0.5), Math.round(dataPemasukkan * 0.65), Math.round(dataPemasukkan * 0.8), Math.round(dataPemasukkan * 0.75), Math.round(dataPemasukkan * 0.9), dataPemasukkan],
-                    pengeluaran: [Math.round(dataPengeluaran * 0.4), Math.round(dataPengeluaran * 0.55), Math.round(dataPengeluaran * 0.75), Math.round(dataPengeluaran * 0.7), Math.round(dataPengeluaran * 0.85), dataPengeluaran],
-                    income: [Math.round(dataIncome * 0.6), Math.round(dataIncome * 0.75), Math.round(dataIncome * 0.85), Math.round(dataIncome * 0.8), Math.round(dataIncome * 0.95), dataIncome],
-                    totals: {
-                        pemasukkan: Math.round(dataPemasukkan * 5.4),
-                        pengeluaran: Math.round(dataPengeluaran * 4.8),
-                        income: Math.round(dataIncome * 6.2)
-                    }
-                },
-                '1Y': {
-                    labels: ['2025 Q1', '2025 Q2', '2025 Q3', '2025 Q4', '2026 Q1', 'Saat Ini'],
-                    pemasukkan: [Math.round(dataPemasukkan * 0.45), Math.round(dataPemasukkan * 0.6), Math.round(dataPemasukkan * 0.75), Math.round(dataPemasukkan * 0.8), Math.round(dataPemasukkan * 0.95), dataPemasukkan],
-                    pengeluaran: [Math.round(dataPengeluaran * 0.35), Math.round(dataPengeluaran * 0.5), Math.round(dataPengeluaran * 0.7), Math.round(dataPengeluaran * 0.75), Math.round(dataPengeluaran * 0.9), dataPengeluaran],
-                    income: [Math.round(dataIncome * 0.55), Math.round(dataIncome * 0.7), Math.round(dataIncome * 0.8), Math.round(dataIncome * 0.85), Math.round(dataIncome * 1.05), dataIncome],
-                    totals: {
-                        pemasukkan: Math.round(dataPemasukkan * 11.2),
-                        pengeluaran: Math.round(dataPengeluaran * 9.8),
-                        income: Math.round(dataIncome * 12.5)
-                    }
-                },
-                'ALL': {
-                    labels: ['Awal Mulai', 'Tahun 1', 'Tahun 2', 'Saat Ini'],
-                    pemasukkan: [Math.round(dataPemasukkan * 0.3), Math.round(dataPemasukkan * 0.6), Math.round(dataPemasukkan * 0.85), dataPemasukkan],
-                    pengeluaran: [Math.round(dataPengeluaran * 0.2), Math.round(dataPengeluaran * 0.5), Math.round(dataPengeluaran * 0.8), dataPengeluaran],
-                    income: [Math.round(dataIncome * 0.4), Math.round(dataIncome * 0.7), Math.round(dataIncome * 0.9), dataIncome],
-                    totals: {
-                        pemasukkan: Math.round(dataPemasukkan * 24.5),
-                        pengeluaran: Math.round(dataPengeluaran * 21.2),
-                        income: Math.round(dataIncome * 28.6)
-                    }
-                }
+            // Daftar hari, bulan bahasa Indonesia
+            const indonesianDays = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const indonesianMonthsShort = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            const indonesianMonthsFull = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+            // Utilitas parsing tanggal & format local timezone
+            const parseDate = (dateStr) => {
+                const parts = dateStr.split('-');
+                return new Date(parts[0], parts[1] - 1, parts[2]); // local timezone
             };
 
-            // Setup linear gradients for background areas
+            const getLocalDateString = (date) => {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            };
+
+            const getTxHour = (tx) => {
+                if (!tx.created_at) return 12;
+                const timePart = tx.created_at.split(' ')[1] || tx.created_at.split('T')[1];
+                if (!timePart) return 12;
+                return parseInt(timePart.split(':')[0], 10);
+            };
+
+            // Fungsi utama untuk memfilter dan mengelompokkan data berdasarkan periode
+            function getChartDataForPeriod(period) {
+                const now = new Date();
+                let labels = [];
+                let pemasukkan = [];
+                let pengeluaran = [];
+                let income = [];
+                let totals = { pemasukkan: 0, pengeluaran: 0, income: 0 };
+
+                if (period === '1D') {
+                    // Filter transaksi hari ini saja
+                    const todayStr = getLocalDateString(now);
+                    const todayTxs = rawTransactions.filter(t => t.tanggal === todayStr);
+
+                    labels = ['09:00', '12:00', '15:00', '18:00', '21:00'];
+                    pemasukkan = [0, 0, 0, 0, 0];
+                    pengeluaran = [0, 0, 0, 0, 0];
+                    income = [0, 0, 0, 0, 0];
+
+                    todayTxs.forEach(tx => {
+                        const amount = parseFloat(tx.nominal);
+                        const hour = getTxHour(tx);
+                        let idx = 0;
+                        if (hour < 11) idx = 0;
+                        else if (hour < 14) idx = 1;
+                        else if (hour < 17) idx = 2;
+                        else if (hour < 20) idx = 3;
+                        else idx = 4;
+
+                        if (tx.jenis_transaksi == 1) {
+                            pemasukkan[idx] += amount;
+                            totals.pemasukkan += amount;
+                        } else {
+                            pengeluaran[idx] += amount;
+                            totals.pengeluaran += amount;
+                        }
+                    });
+
+                    // Akumulasi kumulatif untuk grafik garis yang halus
+                    for (let i = 1; i < 5; i++) {
+                        pemasukkan[i] += pemasukkan[i-1];
+                        pengeluaran[i] += pengeluaran[i-1];
+                    }
+                    for (let i = 0; i < 5; i++) {
+                        income[i] = pemasukkan[i] - pengeluaran[i];
+                    }
+                    totals.income = totals.pemasukkan - totals.pengeluaran;
+
+                } else if (period === '7D') {
+                    // 7 Hari Terakhir
+                    const days = [];
+                    for (let i = 6; i >= 0; i--) {
+                        const d = new Date();
+                        d.setDate(now.getDate() - i);
+                        days.push(d);
+                    }
+
+                    labels = days.map(d => indonesianDays[d.getDay()]);
+                    pemasukkan = [0, 0, 0, 0, 0, 0, 0];
+                    pengeluaran = [0, 0, 0, 0, 0, 0, 0];
+                    income = [0, 0, 0, 0, 0, 0, 0];
+
+                    const dateStrings = days.map(d => getLocalDateString(d));
+
+                    rawTransactions.forEach(tx => {
+                        const idx = dateStrings.indexOf(tx.tanggal);
+                        if (idx !== -1) {
+                            const amount = parseFloat(tx.nominal);
+                            if (tx.jenis_transaksi == 1) {
+                                pemasukkan[idx] += amount;
+                                totals.pemasukkan += amount;
+                            } else {
+                                pengeluaran[idx] += amount;
+                                totals.pengeluaran += amount;
+                            }
+                        }
+                    });
+
+                    // Akumulasi kumulatif
+                    for (let i = 1; i < 7; i++) {
+                        pemasukkan[i] += pemasukkan[i-1];
+                        pengeluaran[i] += pengeluaran[i-1];
+                    }
+                    for (let i = 0; i < 7; i++) {
+                        income[i] = pemasukkan[i] - pengeluaran[i];
+                    }
+                    totals.income = totals.pemasukkan - totals.pengeluaran;
+
+                } else if (period === '1M') {
+                    // 1 Bulan Terakhir (dibagi 4 Minggu)
+                    labels = ['Minggu 1', 'Minggu 2', 'Minggu 3', 'Minggu 4'];
+                    pemasukkan = [0, 0, 0, 0];
+                    pengeluaran = [0, 0, 0, 0];
+                    income = [0, 0, 0, 0];
+
+                    rawTransactions.forEach(tx => {
+                        const txDate = parseDate(tx.tanggal);
+                        const diffTime = now - txDate;
+                        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+                        if (diffDays >= 0 && diffDays < 30) {
+                            const amount = parseFloat(tx.nominal);
+                            let idx = 0;
+                            if (diffDays >= 21) idx = 0;      // Minggu 1
+                            else if (diffDays >= 14) idx = 1; // Minggu 2
+                            else if (diffDays >= 7) idx = 2;  // Minggu 3
+                            else idx = 3;                     // Minggu 4
+
+                            if (tx.jenis_transaksi == 1) {
+                                pemasukkan[idx] += amount;
+                                totals.pemasukkan += amount;
+                            } else {
+                                pengeluaran[idx] += amount;
+                                totals.pengeluaran += amount;
+                            }
+                        }
+                    });
+
+                    // Akumulasi kumulatif
+                    for (let i = 1; i < 4; i++) {
+                        pemasukkan[i] += pemasukkan[i-1];
+                        pengeluaran[i] += pengeluaran[i-1];
+                    }
+                    for (let i = 0; i < 4; i++) {
+                        income[i] = pemasukkan[i] - pengeluaran[i];
+                    }
+                    totals.income = totals.pemasukkan - totals.pengeluaran;
+
+                } else if (period === '3M') {
+                    // 3 Bulan Terakhir
+                    const months = [];
+                    for (let i = 2; i >= 0; i--) {
+                        const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                        months.push(d);
+                    }
+
+                    labels = months.map(m => indonesianMonthsFull[m.getMonth()]);
+                    pemasukkan = [0, 0, 0];
+                    pengeluaran = [0, 0, 0];
+                    income = [0, 0, 0];
+
+                    rawTransactions.forEach(tx => {
+                        const txDate = parseDate(tx.tanggal);
+                        months.forEach((m, idx) => {
+                            if (txDate.getFullYear() === m.getFullYear() && txDate.getMonth() === m.getMonth()) {
+                                const amount = parseFloat(tx.nominal);
+                                if (tx.jenis_transaksi == 1) {
+                                    pemasukkan[idx] += amount;
+                                    totals.pemasukkan += amount;
+                                } else {
+                                    pengeluaran[idx] += amount;
+                                    totals.pengeluaran += amount;
+                                }
+                            }
+                        });
+                    });
+
+                    // Akumulasi kumulatif
+                    for (let i = 1; i < 3; i++) {
+                        pemasukkan[i] += pemasukkan[i-1];
+                        pengeluaran[i] += pengeluaran[i-1];
+                    }
+                    for (let i = 0; i < 3; i++) {
+                        income[i] = pemasukkan[i] - pengeluaran[i];
+                    }
+                    totals.income = totals.pemasukkan - totals.pengeluaran;
+
+                } else if (period === '6M') {
+                    // 6 Bulan Terakhir
+                    const months = [];
+                    for (let i = 5; i >= 0; i--) {
+                        const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                        months.push(d);
+                    }
+
+                    labels = months.map(m => indonesianMonthsShort[m.getMonth()]);
+                    pemasukkan = [0, 0, 0, 0, 0, 0];
+                    pengeluaran = [0, 0, 0, 0, 0, 0];
+                    income = [0, 0, 0, 0, 0, 0];
+
+                    rawTransactions.forEach(tx => {
+                        const txDate = parseDate(tx.tanggal);
+                        months.forEach((m, idx) => {
+                            if (txDate.getFullYear() === m.getFullYear() && txDate.getMonth() === m.getMonth()) {
+                                const amount = parseFloat(tx.nominal);
+                                if (tx.jenis_transaksi == 1) {
+                                    pemasukkan[idx] += amount;
+                                    totals.pemasukkan += amount;
+                                } else {
+                                    pengeluaran[idx] += amount;
+                                    totals.pengeluaran += amount;
+                                }
+                            }
+                        });
+                    });
+
+                    // Akumulasi kumulatif
+                    for (let i = 1; i < 6; i++) {
+                        pemasukkan[i] += pemasukkan[i-1];
+                        pengeluaran[i] += pengeluaran[i-1];
+                    }
+                    for (let i = 0; i < 6; i++) {
+                        income[i] = pemasukkan[i] - pengeluaran[i];
+                    }
+                    totals.income = totals.pemasukkan - totals.pengeluaran;
+
+                } else if (period === '1Y') {
+                    // Filter tahunan dimulai dari tahun 2026
+                    const startYear = 2026;
+                    const currentYear = now.getFullYear();
+                    const currentMonth = now.getMonth();
+
+                    const monthPairs = [];
+                    for (let y = startYear; y <= currentYear; y++) {
+                        const maxM = (y === currentYear) ? currentMonth : 11;
+                        for (let m = 0; m <= maxM; m++) {
+                            monthPairs.push({ year: y, month: m });
+                        }
+                    }
+
+                    labels = monthPairs.map(p => `${indonesianMonthsShort[p.month]} ${p.year}`);
+                    pemasukkan = monthPairs.map(() => 0);
+                    pengeluaran = monthPairs.map(() => 0);
+                    income = monthPairs.map(() => 0);
+
+                    rawTransactions.forEach(tx => {
+                        const txDate = parseDate(tx.tanggal);
+                        monthPairs.forEach((p, idx) => {
+                            if (txDate.getFullYear() === p.year && txDate.getMonth() === p.month) {
+                                const amount = parseFloat(tx.nominal);
+                                if (tx.jenis_transaksi == 1) {
+                                    pemasukkan[idx] += amount;
+                                    totals.pemasukkan += amount;
+                                } else {
+                                    pengeluaran[idx] += amount;
+                                    totals.pengeluaran += amount;
+                                }
+                            }
+                        });
+                    });
+
+                    // Akumulasi kumulatif
+                    for (let i = 1; i < monthPairs.length; i++) {
+                        pemasukkan[i] += pemasukkan[i-1];
+                        pengeluaran[i] += pengeluaran[i-1];
+                    }
+                    for (let i = 0; i < monthPairs.length; i++) {
+                        income[i] = pemasukkan[i] - pengeluaran[i];
+                    }
+                    totals.income = totals.pemasukkan - totals.pengeluaran;
+
+                } else if (period === 'ALL') {
+                    // Filter data dari 2026 hingga tahun saat ini
+                    const startYear = 2026;
+                    const currentYear = now.getFullYear();
+                    const years = [];
+                    for (let y = startYear; y <= currentYear; y++) {
+                        years.push(y);
+                    }
+
+                    labels = years.map(y => y.toString());
+                    pemasukkan = years.map(() => 0);
+                    pengeluaran = years.map(() => 0);
+                    income = years.map(() => 0);
+
+                    rawTransactions.forEach(tx => {
+                        const txDate = parseDate(tx.tanggal);
+                        const idx = years.indexOf(txDate.getFullYear());
+                        if (idx !== -1) {
+                            const amount = parseFloat(tx.nominal);
+                            if (tx.jenis_transaksi == 1) {
+                                pemasukkan[idx] += amount;
+                                totals.pemasukkan += amount;
+                            } else {
+                                pengeluaran[idx] += amount;
+                                totals.pengeluaran += amount;
+                            }
+                        }
+                    });
+
+                    // Akumulasi kumulatif
+                    for (let i = 1; i < years.length; i++) {
+                        pemasukkan[i] += pemasukkan[i-1];
+                        pengeluaran[i] += pengeluaran[i-1];
+                    }
+                    for (let i = 0; i < years.length; i++) {
+                        income[i] = pemasukkan[i] - pengeluaran[i];
+                    }
+                    totals.income = totals.pemasukkan - totals.pengeluaran;
+                }
+
+                return { labels, pemasukkan, pengeluaran, income, totals };
+            }
+
+            // Inisialisasi linear gradients untuk latar belakang chart
             function getGradients() {
                 const greenGrad = ctx.createLinearGradient(0, 0, 0, 300);
                 greenGrad.addColorStop(0, 'rgba(16, 185, 129, 0.22)');
@@ -942,7 +1179,7 @@
 
             const gradients = getGradients();
 
-            // Calculate change percentage (Naik / Turun) compared to start of period
+            // Hitung persentase kenaikan / penurunan
             function calculateChange(incomeArray) {
                 if (!incomeArray || incomeArray.length < 2) return { percent: '0.0', isPositive: true };
                 
@@ -965,9 +1202,10 @@
                 };
             }
 
-            // Dynamically updates metric cards on the dashboard based on active filter
+            // Memperbarui nominal kartu di bagian atas dashboard secara dinamis
             function updateCardTotals(period) {
-                const totals = chartPeriodData[period].totals;
+                const data = getChartDataForPeriod(period);
+                const totals = data.totals;
                 
                 const incomeEl = document.getElementById('incomeAmount');
                 const pemasukkanEl = document.getElementById('pemasukkanAmount');
@@ -991,8 +1229,9 @@
                 }
             }
 
+            // Memperbarui persentase indikator kenaikan / penurunan di chart header
             function updateChangeIndicator(period) {
-                const data = chartPeriodData[period];
+                const data = getChartDataForPeriod(period);
                 const change = calculateChange(data.income);
                 
                 const indicator = document.getElementById('chartChangeIndicator');
@@ -1011,9 +1250,8 @@
             }
 
             function initChart(period) {
-                const activeData = chartPeriodData[period];
+                const activeData = getChartDataForPeriod(period);
                 
-                // Income color adapts to negative trends
                 const lastIncome = activeData.income[activeData.income.length - 1];
                 const incomeColor = lastIncome >= 0 ? '#3b82f6' : '#ef4444';
                 const incomeGrad = lastIncome >= 0 ? gradients.blueGrad : gradients.redGrad;
@@ -1156,7 +1394,7 @@
                 });
             }
 
-            // Bind click listeners for period switch buttons
+            // Bind click listeners untuk tombol pengubah periode
             document.querySelectorAll('.period-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
@@ -1170,7 +1408,7 @@
                 });
             });
 
-            // Initial chart load
+            // Load chart awal (1M)
             initChart('1M');
             updateChangeIndicator('1M');
             updateCardTotals('1M');
