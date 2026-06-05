@@ -78,24 +78,3 @@ Route::middleware(['auth'])->group(function () {
         ->name('admin.reports.pdf');
     Route::get('/admin/reports', [App\Http\Controllers\AdminDashboardController::class, 'reports'])->name('admin.reports');
 });
-
-// Rute Diagnostik Email & Cache
-Route::get('/clear-cache', function() {
-    \Illuminate\Support\Facades\Artisan::call('config:clear');
-    \Illuminate\Support\Facades\Artisan::call('cache:clear');
-    \Illuminate\Support\Facades\Artisan::call('route:clear');
-    \Illuminate\Support\Facades\Artisan::call('view:clear');
-    return "Semua cache Laravel berhasil dibersihkan!";
-});
-
-Route::get('/test-email', function () {
-    try {
-        \Illuminate\Support\Facades\Mail::raw('Ini adalah email uji coba dari Hafidz Catering untuk memastikan konfigurasi SMTP Anda berfungsi.', function ($message) {
-            $message->to('gerry.dimasarya2006@gmail.com')
-                    ->subject('Uji Coba SMTP - Hafidz Catering');
-        });
-        return "Email uji coba berhasil terkirim! Silakan cek kotak masuk atau folder spam di gerry.dimasarya2006@gmail.com.";
-    } catch (\Exception $e) {
-        return "Gagal mengirim email. Eror lengkap: " . $e->getMessage();
-    }
-});
