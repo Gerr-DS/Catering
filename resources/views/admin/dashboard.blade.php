@@ -1118,41 +1118,46 @@
                     totals.income = totals.pemasukkan - totals.pengeluaran;
 
                 } else if (period === 'ALL') {
-                    // Filter data dari 2026 hingga tahun saat ini
-                    const startYear = 2026;
-                    const currentYear = now.getFullYear();
-                    const years = [];
-                    for (let y = startYear; y <= currentYear; y++) {
-                        years.push(y);
-                    }
+                    // Ambil seluruh tanggal transaksi unik yang ada di database dan urutkan
+                    const uniqueDates = [...new Set(rawTransactions.map(t => t.tanggal))].sort();
 
-                    labels = years.map(y => y.toString());
-                    pemasukkan = years.map(() => 0);
-                    pengeluaran = years.map(() => 0);
-                    income = years.map(() => 0);
+                    if (uniqueDates.length === 0) {
+                        labels = ['Tidak Ada Data'];
+                        pemasukkan = [0];
+                        pengeluaran = [0];
+                        income = [0];
+                    } else {
+                        labels = uniqueDates.map(dateStr => {
+                            const dateObj = parseDate(dateStr);
+                            return `${dateObj.getDate()} ${indonesianMonthsShort[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
+                        });
+                        
+                        pemasukkan = uniqueDates.map(() => 0);
+                        pengeluaran = uniqueDates.map(() => 0);
+                        income = uniqueDates.map(() => 0);
 
-                    rawTransactions.forEach(tx => {
-                        const txDate = parseDate(tx.tanggal);
-                        const idx = years.indexOf(txDate.getFullYear());
-                        if (idx !== -1) {
-                            const amount = parseFloat(tx.nominal);
-                            if (tx.jenis_transaksi == 1) {
-                                pemasukkan[idx] += amount;
-                                totals.pemasukkan += amount;
-                            } else {
-                                pengeluaran[idx] += amount;
-                                totals.pengeluaran += amount;
+                        rawTransactions.forEach(tx => {
+                            const idx = uniqueDates.indexOf(tx.tanggal);
+                            if (idx !== -1) {
+                                const amount = parseFloat(tx.nominal);
+                                if (tx.jenis_transaksi == 1) {
+                                    pemasukkan[idx] += amount;
+                                    totals.pemasukkan += amount;
+                                } else {
+                                    pengeluaran[idx] += amount;
+                                    totals.pengeluaran += amount;
+                                }
                             }
-                        }
-                    });
+                        });
 
-                    // Akumulasi kumulatif
-                    for (let i = 1; i < years.length; i++) {
-                        pemasukkan[i] += pemasukkan[i-1];
-                        pengeluaran[i] += pengeluaran[i-1];
-                    }
-                    for (let i = 0; i < years.length; i++) {
-                        income[i] = pemasukkan[i] - pengeluaran[i];
+                        // Akumulasi kumulatif agar grafiknya menampilkan progress pertumbuhan
+                        for (let i = 1; i < uniqueDates.length; i++) {
+                            pemasukkan[i] += pemasukkan[i-1];
+                            pengeluaran[i] += pengeluaran[i-1];
+                        }
+                        for (let i = 0; i < uniqueDates.length; i++) {
+                            income[i] = pemasukkan[i] - pengeluaran[i];
+                        }
                     }
                     totals.income = totals.pemasukkan - totals.pengeluaran;
                 }
