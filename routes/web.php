@@ -143,3 +143,16 @@ Route::get('/show-pending', function () {
     $html .= "</tbody></table>";
     return $html;
 });
+
+Route::get('/show-logs', function () {
+    $logPath = storage_path('logs/laravel.log');
+    if (!file_exists($logPath)) {
+        return "File log laravel.log tidak ditemukan atau kosong.";
+    }
+    
+    $logContent = file_get_contents($logPath);
+    $lines = explode("\n", $logContent);
+    $lastLines = array_slice($lines, -150);
+    
+    return "<h1>Laravel Logs (Last 150 lines)</h1><pre style='background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: monospace;'>" . htmlspecialchars(implode("\n", $lastLines)) . "</pre>";
+});
