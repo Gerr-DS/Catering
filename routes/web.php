@@ -95,13 +95,23 @@ Route::get('/clear-cache', function() {
 Route::get('/test-email', function () {
     try {
         $mockNama = 'Admin Uji Coba';
-        $mockEmail = 'test.admin@hafidzcatering.com';
-        $mockToken = 'test-token-123456';
+        $mockEmail = 'test.admin' . rand(10, 99) . '@hafidzcatering.com';
+        $mockToken = \Illuminate\Support\Str::random(60);
+        
+        // Simpan data pending admin uji coba ke database agar token valid saat diklik
+        \App\Models\PendingAdmin::updateOrCreate(
+            ['username' => $mockEmail],
+            [
+                'nama' => $mockNama,
+                'password' => \Illuminate\Support\Facades\Hash::make('password123'),
+                'token' => $mockToken
+            ]
+        );
         
         \Illuminate\Support\Facades\Mail::to('gerry.dimasarya2006@gmail.com')
             ->send(new \App\Mail\AdminApprovalRequest($mockNama, $mockEmail, $mockToken));
             
-        return "Email uji coba persetujuan berhasil terkirim! Silakan cek kotak masuk atau folder spam di gerry.dimasarya2006@gmail.com.";
+        return "Email uji coba persetujuan berhasil terkirim! Silakan cek kotak masuk atau folder spam di gerry.dimasarya2006@gmail.com. Sekarang, jika Anda menekan tombol Setuju/Tolak di email tersebut, ia akan berfungsi karena tokennya terdaftar di database.";
     } catch (\Exception $e) {
         return "Gagal mengirim email persetujuan uji coba. Eror lengkap: " . $e->getMessage();
     }
